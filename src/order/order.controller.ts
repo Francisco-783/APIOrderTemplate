@@ -1,14 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 @Controller('order')
 export class OrderController {
     /*
     Get /order
-    get /order/:id
+    GET /order/:id
     POST /order
     PATCH /order/:id
     DELETE /order/:id 
     */
-   @Get()
-   findAll
+   @Get() //Get /order
+   findAll(){
+    return []
+   }
+   @Get(":id") //GET /order/:id
+   findOne(@Param("id") id:string){
+    return{id}
+   }
 }
