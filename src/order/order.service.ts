@@ -61,22 +61,22 @@ export class OrderService {
         return this.orders
     }
 
-    editOrder(editedOrder: Order, role?: "USER" | "ADMIN"){
+    editOrder(id:number ,editedOrder: Order, role?: "USER" | "ADMIN"){
         this.orders = this.orders.map(order =>{
-            if (order.id === editedOrder.id){
-                return {...order, ...editedOrder}
+            if (order.id === id){
+                order = {...order, ...editedOrder}
             }
             return order
         })
-        return this.findOne(editedOrder.id)
+        return this.findOne(id)
     }
 
     deleteOrder(id:number, role?: "USER" | "ADMIN"){
         const removedOrder = this.findOne(id)
 
-        this.orders= this.orders.filter(order => order.id !== id)
+        this.orders = this.orders.filter(order => order.id !== id)
 
-        return removedOrder
+        return this.orders
     }
 
 }

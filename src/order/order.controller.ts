@@ -37,14 +37,14 @@ export class OrderController {
       return this.OrderService.createOrder(order)
    }
 
-   @Patch(":id") //PATCH /order/:id NO ANDA
-   editOrder(@Body() editedOrder: Order){ //ESTO SE TIENE QUE CAMBIAR APRA QUE RECIBA EL ID Y LA COMIDA CAMBIADA SEA LA DEFINIDA POR EL ID
-        return this.OrderService.editOrder(editedOrder)
+   @Patch(":id") //PATCH /order/:id
+   editOrder(@Body() editedOrder: Order, @Param("id") id:number ){ //ESTO SE TIENE QUE CAMBIAR APRA QUE RECIBA EL ID Y LA COMIDA CAMBIADA SEA LA DEFINIDA POR EL ID
+        return this.OrderService.editOrder(+id ,editedOrder)
    }
 
    @Delete(":id") //DELETE /order/:id 
    deleteOrder(@Param("id") id:number){ //no anda
-    return this.OrderService.deleteOrder(id)
+    return this.OrderService.deleteOrder(+id)
    }
 
 }
