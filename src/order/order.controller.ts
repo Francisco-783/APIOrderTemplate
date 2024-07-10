@@ -1,21 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { OrderService } from './order.service';
-
-type AddItem = {
-   name: string;
-   value: boolean | number;
-   price: number;
-};
+import { CreateOrderDTO } from 'src/dto/create-order.dto';
+import { UpdateOrderDTO } from 'src/dto/update-order.dto';
 
 
-type Order = {
-   id: number;
-   name: string;
-   image: string;
-   description: string;
-   visible: boolean;
-   add?: AddItem[];
-};
 
 @Controller('order')
 export class OrderController {
@@ -28,23 +16,23 @@ export class OrderController {
    }
 
    @Get(":id") //GET /order/:id
-   findOne(@Param("id") id:string){
-      return this.OrderService.findOne(+id)
+   findOne(@Param("id", ParseIntPipe) id:number){
+      return this.OrderService.findOne(id)
    }
 
    @Post() //POST /order
-   createOrder(@Body() order:Order){
+   createOrder(@Body(ValidationPipe) order:CreateOrderDTO){
       return this.OrderService.createOrder(order)
    }
 
    @Patch(":id") //PATCH /order/:id
-   editOrder(@Body() editedOrder: Order, @Param("id") id:number ){ //ESTO SE TIENE QUE CAMBIAR APRA QUE RECIBA EL ID Y LA COMIDA CAMBIADA SEA LA DEFINIDA POR EL ID
-        return this.OrderService.editOrder(+id ,editedOrder)
+   editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
+        return this.OrderService.editOrder(id , editedOrder)
    }
 
    @Delete(":id") //DELETE /order/:id 
-   deleteOrder(@Param("id") id:number){ //no anda
-    return this.OrderService.deleteOrder(+id)
+   deleteOrder(@Param("id", ParseIntPipe) id:number){
+    return this.OrderService.deleteOrder(id)
    }
 
 }

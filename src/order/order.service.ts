@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
-
+import { CreateOrderDTO } from 'src/dto/create-order.dto';
+import { UpdateOrderDTO } from 'src/dto/update-order.dto';
+import { NotFoundException } from '@nestjs/common';
 
 type AddItem = {
     name: string;
@@ -40,10 +42,13 @@ export class OrderService {
 
     findOne(id:number){
         const order = this.orders.find(order => order.id === id)
+
+        if (!order) throw new NotFoundException("order Not found")
+
         return order
     }
 
-    createOrder(order: Order, role?: "USER" | "ADMIN") {
+    createOrder(order: CreateOrderDTO, role?: "USER" | "ADMIN") {
         const highestId = this.orders.reduce((max, order) => order.id > max ? order.id : max, 0);
 
         const newOrder: Order = {
@@ -61,7 +66,7 @@ export class OrderService {
         return this.orders
     }
 
-    editOrder(id:number ,editedOrder: Order, role?: "USER" | "ADMIN"){
+    editOrder(id:number ,editedOrder: UpdateOrderDTO, role?: "USER" | "ADMIN"){
         this.orders = this.orders.map(order =>{
             if (order.id === id){
                 order = {...order, ...editedOrder}
