@@ -80,8 +80,8 @@ export class OrderService {
         const removedOrder = this.findOne(id)
 
         this.orders = this.orders.filter(order => order.id !== id)
-
+        console.log("TEST")
         return this.orders
     }
-// NEWNEWNEWNEWNE
+// NEWNEWNEWNEWNEsdsdsdsdsd
 }
