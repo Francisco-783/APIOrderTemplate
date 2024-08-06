@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe,
 import { OrderService } from './order.service';
 import { CreateOrderDTO } from 'src/dto/create-order.dto';
 import { UpdateOrderDTO } from 'src/dto/update-order.dto';
-
+import { Throttle, SkipThrottle } from '@nestjs/throttler';
 
 
 @Controller('order')
@@ -14,6 +14,7 @@ export class OrderController {
    findAll(@Query("role") role?: "USER"| "ADMIN"){
     return this.OrderService.findAll(role)
    }
+
 
    @Get(":id") //GET /order/:id
    findOne(@Param("id", ParseIntPipe) id:number){
