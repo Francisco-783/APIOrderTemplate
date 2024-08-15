@@ -26,12 +26,12 @@ export class OrderController {
       return this.OrderService.createOrder(order)
    }
 
-   @Patch(":id") //PATCH /order/:id
+   @Patch(":id") //PATCH /order/:id // falta agregar comprobacion que es el admin
    editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
         return this.OrderService.editOrder(id , editedOrder)
    }
 
-   @Delete(":id") //DELETE /order/:id 
+   @Delete(":id") //DELETE /order/:id // falta agregar comprobacion que es el admin
    deleteOrder(@Param("id", ParseIntPipe) id:number){
     return this.OrderService.deleteOrder(id)
    }
