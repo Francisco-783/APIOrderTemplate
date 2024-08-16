@@ -11,21 +11,39 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+model AddItem {
+  id     Int     @id @default(autoincrement())
+  name   String
+  value  Float
+  price  Float
+  order  Order   @relation(fields: [orderId], references: [id])
+  orderId Int
 }
 
-enum Role {
-  USER
-  ADMIN
+model Order {
+  id          Int        @id @default(autoincrement())
+  name        String
+  image       String
+  description String
+  visible     Boolean
+  addItems    AddItem[]
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  name String @unique
-  email String @unique
-  role Role
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+
+// type AddItem = {
+//     name: string;
+//     value: boolean | number;
+//     price: number;
+// };
+
+
+// type Order = {
+//     id: number;
+//     name: string;
+//     image: string;
+//     description: string;
+//     visible: boolean;
+//     add?: AddItem[];
+// };
