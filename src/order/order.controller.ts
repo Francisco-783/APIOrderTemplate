@@ -8,31 +8,32 @@ import { UpdateOrderDTO } from 'src/dto/update-order.dto';
 @Controller('order')
 export class OrderController {
 
-   constructor (private readonly OrderService: OrderService) {}
+   constructor(private readonly prisma: OrderService) {}
 
    @Get() //Get /order
-   findAll(@Query("role") role?: "USER"| "ADMIN"){
-    return this.OrderService.findAll(role)
+   findAll(){
+    return this.prisma.findAll()
    }
+
 
    @Get(":id") //GET /order/:id
    findOne(@Param("id", ParseIntPipe) id:number){
-      return this.OrderService.findOne(id)
+      return this.prisma.findOne(id)
    }
 
    @Post() //POST /order
    createOrder(@Body(ValidationPipe) order:CreateOrderDTO){
-      return this.OrderService.createOrder(order)
+      return this.prisma.createOrder(order)
    }
 
-   @Patch(":id") //PATCH /order/:id
+   @Patch(":id") //PATCH /order/:id // falta agregar comprobacion que es el admin
    editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
-        return this.OrderService.editOrder(id , editedOrder)
+        return this.prisma.editOrder(id , editedOrder)
    }
 
-   @Delete(":id") //DELETE /order/:id 
+   @Delete(":id") //DELETE /order/:id // falta agregar comprobacion que es el admin
    deleteOrder(@Param("id", ParseIntPipe) id:number){
-    return this.OrderService.deleteOrder(id)
+    return this.prisma.deleteOrder(id)
    }
 
 }

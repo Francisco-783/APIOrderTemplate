@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreateOrderDTO } from 'src/dto/create-order.dto';
 import { UpdateOrderDTO } from 'src/dto/update-order.dto';
 import { NotFoundException } from '@nestjs/common';
+import { DatabaseService } from 'src/database/database.service';
+
 
 type AddItem = {
     name: string;
@@ -33,11 +35,12 @@ export class OrderService {
         }
     ]
 
-    findAll(role?: "USER"| "ADMIN"){//if is USER only have to get the visible ones
-        if (role === "ADMIN"){
-            return "ADMIN Request"
-        }
-        return this.orders
+    constructor(private readonly databaseModule: DatabaseService) {}
+
+
+    findAll(){//if is USER only have to get the visible ones
+        
+        return this.databaseModule.order.findMany
     }
 
     findOne(id:number){
@@ -80,7 +83,7 @@ export class OrderService {
         const removedOrder = this.findOne(id)
 
         this.orders = this.orders.filter(order => order.id !== id)
-
+        console.log("TEST")
         return this.orders
     }
 
