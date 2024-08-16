@@ -13,7 +13,7 @@ export class PromoService {
     }
 
     findOnePromo(id:number){
-
+console.log("hola")
     }
 
     createPromo(/*order: CreateOrderDTO,*/ role?: "USER" | "ADMIN") {
