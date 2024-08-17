@@ -38,9 +38,14 @@ export class OrderService {
     constructor(private readonly databaseModule: DatabaseService) {}
 
 
-    findAll(){//if is USER only have to get the visible ones
-        
-        return this.databaseModule.order.findMany
+    async findAll(){//if is USER only have to get the visible ones
+        try{
+        const A = await this.databaseModule.order.findFirst()
+       return A
+    } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+
     }
 
     findOne(id:number){
