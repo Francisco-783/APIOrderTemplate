@@ -40,7 +40,7 @@ export class OrderService {
 
     async findAll(){//if is USER only have to get the visible ones
         try{
-        const A = await this.databaseModule.order.findFirst()
+        const A = await this.databaseModule.order.findMany()
        return A
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -48,30 +48,38 @@ export class OrderService {
 
     }
 
-    findOne(id:number){
-        const order = this.orders.find(order => order.id === id)
-
-        if (!order) throw new NotFoundException("order Not found")
-
-        return order
+    async findOne(id:number){
+        try{
+            const oneOrder = await this.databaseModule.order.findUnique({
+                where: {
+                  id: id,  
+                },
+              });
+           return oneOrder
+        } catch (error) {
+            console.error('Error fetching users:', error);
+          }
     }
 
-    createOrder(order: CreateOrderDTO, role?: "USER" | "ADMIN") {
-        const highestId = this.orders.reduce((max, order) => order.id > max ? order.id : max, 0);
-
-        const newOrder: Order = {
-            id: highestId + 1,
-            name: order.name,
-            image: order.image,
-            description: order.description,
-            visible: order.visible,
-            add: order.add || []
-            
-        };
-
-        this.orders.push(newOrder);
-
-        return this.orders
+    async createOrder(order: CreateOrderDTO) {
+        try{
+            const newOrder = await this.databaseModule.order.create({
+                data: {
+                  name: order.name,
+                  image: order.image,
+                  description: order.description,
+                  visible: true,
+                  addItems: {
+                    connect: order.addItemDone,
+                    create: order.createAddItem,
+                  },
+                },
+              });
+              return newOrder
+        }
+        catch (error) {
+            console.error('Error fetching users:', error);
+          }
     }
 
     editOrder(id:number ,editedOrder: UpdateOrderDTO, role?: "USER" | "ADMIN"){
