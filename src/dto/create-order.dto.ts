@@ -1,12 +1,16 @@
 import { IsString, IsUrl, IsNotEmpty } from "class-validator";
 
 
-class AddItemDTO {
+class CreateAddItemDTO {
   @IsString()
+    id?: number
     name: string;
-    value: boolean | number;
+    value: number;
     price: number;
-  
+  }
+
+  class AddItemDone {
+    id: number
   }
   
 export  class CreateOrderDTO {
@@ -18,5 +22,6 @@ export  class CreateOrderDTO {
     image: string;
     description: string;
     visible: boolean;
-    add?: AddItemDTO[];
+    createAddItem?: CreateAddItemDTO[];
+    addItemDone: AddItemDone[]
   }
