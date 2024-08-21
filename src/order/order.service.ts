@@ -40,7 +40,11 @@ export class OrderService {
 
     async findAll(){//if is USER only have to get the visible ones
         try{
-        const A = await this.databaseModule.order.findMany()
+        const A = await this.databaseModule.order.findMany({
+            include: {
+              addItems: true,  // Incluir los aditivos (AddItem) relacionados
+            },
+          });
        return A
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -52,7 +56,10 @@ export class OrderService {
         try{
             const oneOrder = await this.databaseModule.order.findUnique({
                 where: {
-                  id: id,  
+                  id: id,
+                },
+                include: {
+                  addItems: true,
                 },
               });
            return oneOrder
@@ -82,22 +89,38 @@ export class OrderService {
           }
     }
 
-    editOrder(id:number ,editedOrder: UpdateOrderDTO, role?: "USER" | "ADMIN"){
-        this.orders = this.orders.map(order =>{
-            if (order.id === id){
-                order = {...order, ...editedOrder}
-            }
-            return order
-        })
-        return this.findOne(id)
-    }
+    async editOrder(id: number, editedOrder: UpdateOrderDTO) {
+        try {
+          const updatedOrder = await this.databaseModule.order.update({
+            where: { id },
+            data: {
+              name: editedOrder.name,
+              image: editedOrder.image,
+              description: editedOrder.description,
+              visible: editedOrder.visible,
+              addItems: {
+                connect: editedOrder.addItemDone,
+                create: editedOrder.createAddItem,
+              },
+            },
+          });
+      
+          return updatedOrder;
+        } catch (error) {
+          console.error("Error editing order:", error);
+        }
+      }
 
-    deleteOrder(id:number, role?: "USER" | "ADMIN"){
-        const removedOrder = this.findOne(id)
-
-        this.orders = this.orders.filter(order => order.id !== id)
-        console.log("TEST")
-        return this.orders
-    }
+    async deleteOrder(id: number) {
+        try {
+          const deletedOrder = await this.databaseModule.order.delete({
+            where: { id },
+          });
+      
+          return deletedOrder;
+        } catch (error) {
+          console.error("Error deleting order:", error);
+        }
+      }
 
 }
