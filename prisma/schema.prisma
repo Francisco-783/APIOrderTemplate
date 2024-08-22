@@ -13,37 +13,48 @@ datasource db {
   url  	    = env("DATABASE_URL")
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
-model AddItem {
-  id     Int     @id @default(autoincrement())
-  name   String
-  value  Float
-  price  Float
-  order  Order   @relation(fields: [orderId], references: [id])
-  orderId Int
+model AddItem { //aditives to a order, extra fries or extra meat
+  id          Int     @id @default(autoincrement())
+  name        String
+  limit       Float
+  price       Float
+  order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId     Int?
 }
 
-model Order {
-  id          Int        @id @default(autoincrement())
+model Order { //the order, the food itself
+  id          Int       @id @default(autoincrement())
   name        String
   image       String
   description String
   visible     Boolean
   addItems    AddItem[]
+  price       Int
+  promos      Promo[]   @relation("PromoOrders")
 }
 
+model Extra {
+  id       Int      @id @default(autoincrement())
+  name     String
+  image    String
+  visible  Boolean
+  price    Int
+  promos   Promo[]  @relation("PromoExtras")
+}
 
-// type AddItem = {
-//     name: string;
-//     value: boolean | number;
-//     price: number;
-// };
+model Promo {
+  id       Int      @id @default(autoincrement())
+  name     String
+  image    String
+  visible  Boolean
+  price    Int
+  orders   Order[]  @relation("PromoOrders")
+  extras   Extra[]  @relation("PromoExtras")
+}
 
-
-// type Order = {
-//     id: number;
-//     name: string;
-//     image: string;
-//     description: string;
-//     visible: boolean;
-//     add?: AddItem[];
-// };
+model Admin {
+  id          String   @id @default(uuid())
+  name        String
+  password    String
+  createdAt   DateTime @default(now())
+}
