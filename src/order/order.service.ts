@@ -72,14 +72,16 @@ export class OrderService {
         try{
             const newOrder = await this.databaseModule.order.create({
                 data: {
+                  price: order.price,
                   name: order.name,
                   image: order.image,
                   description: order.description,
                   visible: true,
                   addItems: {
-                    connect: order.addItemDone,
+                    connect: order.addItemsToConnect,
                     create: order.createAddItem,
                   },
+                  
                 },
               });
               return newOrder
@@ -99,7 +101,7 @@ export class OrderService {
               description: editedOrder.description,
               visible: editedOrder.visible,
               addItems: {
-                connect: editedOrder.addItemDone,
+                connect: editedOrder.addItemsToConnect,
                 create: editedOrder.createAddItem,
               },
             },

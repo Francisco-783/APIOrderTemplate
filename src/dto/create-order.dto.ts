@@ -5,7 +5,7 @@ class CreateAddItemDTO {
   @IsString()
     id?: number
     name: string;
-    value: number;
+    limit: number;
     price: number;
   }
 
@@ -15,6 +15,7 @@ class CreateAddItemDTO {
   
 export  class CreateOrderDTO {
     id: number;
+    price: number;
     @IsString()
     @IsNotEmpty()
     name: string;
@@ -23,5 +24,5 @@ export  class CreateOrderDTO {
     description: string;
     visible: boolean;
     createAddItem?: CreateAddItemDTO[];
-    addItemDone: AddItemDone[]
+    addItemsToConnect: AddItemDone[]
   }
