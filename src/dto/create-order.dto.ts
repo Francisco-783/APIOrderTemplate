@@ -14,7 +14,6 @@ class CreateAddItemDTO {
   }
   
 export  class CreateOrderDTO {
-    id: number;
     price: number;
     @IsString()
     @IsNotEmpty()
