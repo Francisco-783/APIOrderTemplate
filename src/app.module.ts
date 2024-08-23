@@ -11,10 +11,6 @@ import { MyLoggerModule } from './my-logger/my-logger.module';
 
 @Module({
   imports: [OrderModule, DatabaseModule, ThrottlerModule.forRoot([{
-    name: "short",
-    ttl: 60000,
-    limit: 3,
-  },{
     name: "long",
     ttl: 60000,
     limit: 50
