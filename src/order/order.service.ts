@@ -23,20 +23,8 @@ type Order = {
 
 @Injectable()
 export class OrderService {
-    
-    private orders: Order[] = [
-        {
-            id: 1,
-            name: "cheese burger",
-            image:"https://www.mostachos.com.ar/adm/files/articulos/1712868317.jpg",
-            description: "Includes filing, moisturizing, and permanent polish application.",
-            visible: true,
-            add: [{name:"Medallon Extra", value:false, price:700},{name:"Porcion de Papas Extra", value:3, price:700},{name:"Panceta Extra", value:false, price:700}]
-        }
-    ]
 
     constructor(private readonly databaseModule: DatabaseService) {}
-
 
     async findAll(){//if is USER only have to get the visible ones
         try{
