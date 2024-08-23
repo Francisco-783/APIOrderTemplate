@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
 import { PromoService } from './promo.service';
+import { CreatePromoDTO } from 'src/dto/create-promo.dto';
+import { UpdateOrderDTO } from 'src/dto/update-order.dto';
 
 @Controller('promo')
 export class PromoController {
@@ -18,13 +20,13 @@ export class PromoController {
     }
  
     @Post()  // CREATE -/promo/:IdAdmin (BODY DATA)
-    createPromo(){
-       return this.PromoService.createPromo()
+    createPromo(@Body(ValidationPipe) promo:CreatePromoDTO){
+       return this.PromoService.createPromo(promo)
     }
  
     @Patch(":id")  // PATCH-/promo/:idProduct/:IdAdmin
-    editPromo(@Body(ValidationPipe) /*editedOrder: UpdateOrderDTO,*/ @Param("id", ParseIntPipe) id:number ){
-         return this.PromoService.editPromo(id ,)
+    editPromo(@Body(ValidationPipe) editedPromo: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
+         return this.PromoService.editPromo(id, editedPromo)
     }
  
     @Delete(":id")  // DELETE -/promo/:IdAdmin
