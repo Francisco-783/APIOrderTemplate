@@ -8,8 +8,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { PromoController } from './promo/promo.controller';
 import { PromoModule } from './promo/promo.module';
 import { MyLoggerModule } from './my-logger/my-logger.module';
-
-import { ExtraModule } from './extra/extra.module';
 import { ExtraModule } from './extra/extra.module';
 
 @Module({
