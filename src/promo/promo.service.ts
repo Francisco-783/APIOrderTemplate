@@ -70,19 +70,21 @@ export class PromoService {
     async editPromo(id: number, updateData) {
         try {
           const updatedPromo = await this.databaseModule.promo.update({
-            where: { id },
+            where: {
+              id: id,
+            },
             data: {
-              ...updateData,
-              extras: updateData.extrasToConnect?.length
-                ? {
-                    connect: updateData.extrasToConnect
-                  }
-                : undefined,
-              orders: updateData.ordersToConnect?.length
-                ? {
-                    connect: updateData.ordersToConnect
-                  }
-                : undefined,
+              price: updateData.price,
+              name: updateData.name,
+              image: updateData.image,
+              visible: updateData.visible,
+              orders: {
+                connect: updateData.ordersToConnect
+              },
+              extras: {
+                connect: updateData.extrasToConnect
+              }
+              
             },
           });
           return updatedPromo;
@@ -92,8 +94,16 @@ export class PromoService {
         }
       }
 
-    deletePromo(id:number, role?: "USER" | "ADMIN"){
-        return "delete promo"
+    async deletePromo(id:number){
+      try {
+        const deletedPromo = await this.databaseModule.promo.delete({
+          where: { id },
+        });
+    
+        return deletedPromo;
+      } catch (error) {
+        console.error("Error deleting order:", error);
+      }
     }
 
 }
