@@ -9,12 +9,15 @@ import { PromoController } from './promo/promo.controller';
 import { PromoModule } from './promo/promo.module';
 import { MyLoggerModule } from './my-logger/my-logger.module';
 
+import { ExtraModule } from './extra/extra.module';
+import { ExtraModule } from './extra/extra.module';
+
 @Module({
   imports: [OrderModule, DatabaseModule, ThrottlerModule.forRoot([{
     name: "long",
     ttl: 60000,
     limit: 50
-  }]), PromoModule, MyLoggerModule],
+  }]), PromoModule, MyLoggerModule, ExtraModule],
   controllers: [AppController, PromoController],
   providers: [AppService, {
     provide: APP_GUARD,
