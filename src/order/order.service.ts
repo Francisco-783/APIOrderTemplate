@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderDTO } from 'src/dto/create-order.dto';
-import { UpdateOrderDTO } from 'src/dto/update-order.dto';
+import { CreateOrderDTO } from 'src/dto/order/create-order.dto';
+import { UpdateOrderDTO } from 'src/dto/order/update-order.dto';
 import { NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 

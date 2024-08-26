@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
-import { CreatePromoDTO } from 'src/dto/create-promo.dto';
+import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
 
 
 // MAKES THE DTOs

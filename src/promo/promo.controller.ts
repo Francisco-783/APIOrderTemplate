@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
 import { PromoService } from './promo.service';
-import { CreatePromoDTO } from 'src/dto/create-promo.dto';
-import { UpdateOrderDTO } from 'src/dto/update-order.dto';
+import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
+import { UpdateOrderDTO } from 'src/dto/order/update-order.dto'; 
 
 @Controller('promo')
 export class PromoController {

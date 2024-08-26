@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { CreateOrderDTO } from 'src/dto/create-order.dto';
-import { UpdateOrderDTO } from 'src/dto/update-order.dto';
+import { CreateOrderDTO } from 'src/dto/order/create-order.dto';
+import { UpdateOrderDTO } from 'src/dto/order/update-order.dto';
 
 
 
