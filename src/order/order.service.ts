@@ -28,12 +28,12 @@ export class OrderService {
 
     async findAllOrder(){//if is USER only have to get the visible ones
         try{
-        const A = await this.databaseModule.order.findMany({
+        const allOrders = await this.databaseModule.order.findMany({
             include: {
               addItems: true,  // Incluir los aditivos (AddItem) relacionados
             },
           });
-       return A
+       return allOrders
     } catch (error) {
         console.error('Error fetching users:', error);
       }

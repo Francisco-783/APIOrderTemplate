@@ -9,26 +9,26 @@ export class ExtraController {
 
   @Post()
   create(@Body(ValidationPipe) createExtraDto: CreateExtraDto) {
-    return this.extraService.create(createExtraDto);
+    return this.extraService.createExtra(createExtraDto);
   }
 
   @Get()
   findAll() {
-    return this.extraService.findAll();
+    return this.extraService.findAllExtra();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string) {
-    return this.extraService.findOne(+id);
+    return this.extraService.findOneExtra(+id);
   }
 
   @Patch(':id')
   update(@Param('id', ParseIntPipe) id: string, @Body(ValidationPipe) updateExtraDto: UpdateExtraDto) {
-    return this.extraService.update(+id, updateExtraDto);
+    return this.extraService.editExtra(+id, updateExtraDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: string) {
-    return this.extraService.remove(+id);
+    return this.extraService.deleteExtra(+id);
   }
 }
