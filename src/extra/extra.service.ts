@@ -11,29 +11,73 @@ export class ExtraService {
 
   async findAllExtra() {//if is USER only have to get the visible ones
     try{
-      
+
     const allExtras = await this.databaseModule.extra.findMany();
 
    return allExtras
 } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error('Error while getting Extras:', error);
   }
 
 }
 
   async findOneExtra(id: number) {
-    return `This action returns a #${id} extra`;
-  }
+        try{
+            const oneExtra = await this.databaseModule.extra.findUnique({
+                where: {
+                  id: id,
+                },
+              });
+           return oneExtra
+        } catch (error) {
+            console.error('Error while getting a Extra:', error);
+          }
+    }
 
-  async createExtra(createExtraDto: CreateExtraDto) {
-    return 'This action adds a new extra';
-  }
+  async createExtra(entryExtra: CreateExtraDto) {
+    try{
+        const newExtra = await this.databaseModule.extra.create({
+            data: {
+              name: entryExtra.name,
+              price: entryExtra.price,
+              image: entryExtra.image,
+              visible: entryExtra.visible,
+            },
+          });
+          return newExtra
+    }
+    catch (error) {
+        console.error('Error while creating Extra:', error);
+      }
+}
 
-  async editExtra(id: number, updateExtraDto: UpdateExtraDto) {
-    return `This action updates a #${id} extra`;
+  async editExtra(id: number, entryEditExtra: UpdateExtraDto) {
+    try {
+      const updatedExtra = await this.databaseModule.extra.update({
+        where: { id },
+        data: {
+          name: entryEditExtra.name,
+          price: entryEditExtra.price,
+          image: entryEditExtra.image,
+          visible: entryEditExtra.visible,
+        },
+      });
+  
+      return updatedExtra;
+    } catch (error) {
+      console.error("Error while editing Extra:", error);
+    }
   }
 
   async deleteExtra(id: number) {
-    return `This action removes a #${id} extra`;
+    try {
+      const deletedExtra = await this.databaseModule.extra.delete({
+        where: { id },
+      });
+  
+      return deletedExtra;
+    } catch (error) {
+      console.error("Error while deleting Extra:", error);
+    }
   }
 }
