@@ -1,1 +1,12 @@
-export class CreateExtraDto {}
+import { IsString, IsUrl, IsNotEmpty } from "class-validator";
+
+export class CreateExtraDto {
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+    @IsUrl()
+    image: string;
+    visible: boolean;
+    @IsNotEmpty()
+    price: number;
+}
