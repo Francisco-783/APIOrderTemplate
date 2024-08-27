@@ -3,9 +3,10 @@ import { IsString, IsUrl, IsNotEmpty } from "class-validator";
 
 class CreateAddItemDTO {
   @IsString()
-    id?: number
+  @IsNotEmpty()
     name: string;
     limit: number;
+    @IsNotEmpty()
     price: number;
   }
 
@@ -14,6 +15,7 @@ class CreateAddItemDTO {
   }
   
 export  class CreateOrderDTO {
+    @IsNotEmpty()
     price: number;
     @IsString()
     @IsNotEmpty()
