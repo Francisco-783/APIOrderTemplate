@@ -35,7 +35,7 @@ export class OrderService {
           });
        return allOrders
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error while getting Orders:', error);
       }
 
     }
@@ -52,7 +52,7 @@ export class OrderService {
               });
            return oneOrder
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error while getting a Order:', error);
           }
     }
 
@@ -75,7 +75,7 @@ export class OrderService {
               return newOrder
         }
         catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error while creating Order:', error);
           }
     }
 

@@ -20,7 +20,7 @@ export class PromoService {
           });
        return allPromos
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error while getting Promos:', error);
       }
 
     }
@@ -38,7 +38,7 @@ export class PromoService {
               });
            return onePromo
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error while getting a Promo:', error);
           }
     }
 
@@ -63,7 +63,7 @@ export class PromoService {
               return newOrder
         }
         catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error while creating Promo:', error);
           }
     }
 
@@ -102,7 +102,7 @@ export class PromoService {
     
         return deletedPromo;
       } catch (error) {
-        console.error("Error deleting order:", error);
+        console.error("Error deleting Promo:", error);
       }
     }
 
