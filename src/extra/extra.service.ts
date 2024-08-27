@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateExtraDto } from './extra/create-extra.dto';
-import { UpdateExtraDto } from './extra/update-extra.dto';
+import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
+import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
 
 @Injectable()
 export class ExtraService {

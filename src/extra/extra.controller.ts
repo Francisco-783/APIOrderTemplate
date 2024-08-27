@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe } from '@nestjs/common';
 import { ExtraService } from './extra.service';
-import { CreateExtraDto } from './extra/create-extra.dto';
-import { UpdateExtraDto } from './extra/update-extra.dto';
+import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
+import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
 
 @Controller('extra')
 export class ExtraController {
   constructor(private readonly extraService: ExtraService) {}
 
   @Post()
-  create(@Body() createExtraDto: CreateExtraDto) {
+  create(@Body(ValidationPipe) createExtraDto: CreateExtraDto) {
     return this.extraService.create(createExtraDto);
   }
 
@@ -18,17 +18,17 @@ export class ExtraController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.extraService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExtraDto: UpdateExtraDto) {
+  update(@Param('id', ParseIntPipe) id: string, @Body(ValidationPipe) updateExtraDto: UpdateExtraDto) {
     return this.extraService.update(+id, updateExtraDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.extraService.remove(+id);
   }
 }
