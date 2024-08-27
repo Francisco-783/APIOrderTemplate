@@ -26,7 +26,7 @@ export class OrderService {
 
     constructor(private readonly databaseModule: DatabaseService) {}
 
-    async findAll(){//if is USER only have to get the visible ones
+    async findAllOrder(){//if is USER only have to get the visible ones
         try{
         const A = await this.databaseModule.order.findMany({
             include: {
@@ -40,7 +40,7 @@ export class OrderService {
 
     }
 
-    async findOne(id:number){
+    async findOneOrder(id:number){
         try{
             const oneOrder = await this.databaseModule.order.findUnique({
                 where: {
