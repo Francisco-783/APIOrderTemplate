@@ -22,35 +22,56 @@ model AddItem { //aditives to a order, extra fries or extra meat
   orderId     Int?
 }
 
-model Order { //the order, the food itself
-  id          Int       @id @default(autoincrement())
-  name        String
-  image       String
-  description String
-  visible     Boolean
-  addItems    AddItem[]
-  price       Int
-  promos      Promo[]   @relation("PromoOrders")
+model ClientRequest {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  status      RequestStatus @default(PENDING)
+  clientId    Int
+  promos      Promo[]     @relation("ClientRequestPromos")
+  orders      Order[]     @relation("ClientRequestOrders")
+  extras      Extra[]     @relation("ClientRequestExtras")
 }
 
-model Extra {
-  id       Int      @id @default(autoincrement())
-  name     String
-  image    String
-  visible  Boolean
-  price    Int
-  promos   Promo[]  @relation("PromoExtras")
+enum RequestStatus {
+  PENDING
+  IN_PROGRESS
+  REJECTED
+  COMPLETED
 }
 
 model Promo {
-  id       Int      @id @default(autoincrement())
-  name     String
-  image    String
-  visible  Boolean
-  price    Int
-  orders   Order[]  @relation("PromoOrders")
-  extras   Extra[]  @relation("PromoExtras")
+  id              Int              @id @default(autoincrement())
+  name            String
+  image           String
+  visible         Boolean
+  price           Int
+  orders          Order[]          @relation("PromoOrders")
+  extras          Extra[]          @relation("PromoExtras")
+  clientRequests  ClientRequest[]  @relation("ClientRequestPromos")
 }
+
+model Order {
+  id              Int              @id @default(autoincrement())
+  name            String
+  image           String
+  description     String
+  visible         Boolean
+  price           Int
+  promos          Promo[]          @relation("PromoOrders")
+  addItems        AddItem[]
+  clientRequests  ClientRequest[]  @relation("ClientRequestOrders")
+}
+
+model Extra {
+  id              Int              @id @default(autoincrement())
+  name            String
+  image           String
+  visible         Boolean
+  price           Int
+  promos          Promo[]          @relation("PromoExtras")
+  clientRequests  ClientRequest[]  @relation("ClientRequestExtras")
+}
+
 
 model Admin {
   id          String   @id @default(uuid())
