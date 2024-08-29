@@ -10,13 +10,14 @@ import { PromoModule } from './promo/promo.module';
 import { MyLoggerModule } from './my-logger/my-logger.module';
 import { ExtraModule } from './extra/extra.module';
 import { AddItemModule } from './addItem/addItem.module';
+import { ClientRequestModule } from './client-request/client-request.module';
 
 @Module({
   imports: [OrderModule, DatabaseModule, ThrottlerModule.forRoot([{
     name: "long",
     ttl: 60000,
     limit: 50
-  }]), PromoModule, MyLoggerModule, ExtraModule, AddItemModule],
+  }]), PromoModule, MyLoggerModule, ExtraModule, AddItemModule, ClientRequestModule],
   controllers: [AppController, PromoController],
   providers: [AppService, {
     provide: APP_GUARD,
