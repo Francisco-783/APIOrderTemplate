@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientRequestDto } from '../dto/client-request/create-client-request.dto';
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
+import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class ClientRequestService {
-  create(createClientRequestDto: CreateClientRequestDto) {
-    return 'This action adds a new clientRequest';
+  constructor(private databaseModule: DatabaseService) {}
+
+  async createClientRequest(data: CreateClientRequestDto) {
+    return await this.databaseModule.clientRequest.create({
+      data: {
+        clientId: data.clientId,
+        status: data.status,
+        promos: {
+          connect: data.promos?.map(promo => ({ id: promo.id })),
+        },
+        orders: {
+          connect: data.orders?.map(order => ({ id: order.id })),
+        },
+        extras: {
+          connect: data.extras?.map(extra => ({ id: extra.id })),
+        },
+      }
+    });
   }
 
-  findAll() {
-    return `This action returns all clientRequest`;
+  async findAllClientRequest() {
+    return await this.databaseModule.clientRequest.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} clientRequest`;
+  async findOneClientRequest(id: number) {
+    return await this.databaseModule.clientRequest.findUnique({
+      where: { id },
+    });
   }
 
-  update(id: number, updateClientRequestDto: UpdateClientRequestDto) {
-    return `This action updates a #${id} clientRequest`;
+  async updateClientRequest(id: number, updateClientRequestDto: UpdateClientRequestDto) {
+    return await this.databaseModule.clientRequest.update({
+      where: { id },
+      data: updateClientRequestDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} clientRequest`;
+  async removeClientRequest(id: number) {
+    return await this.databaseModule.clientRequest.delete({
+      where: { id },
+    });
   }
 }

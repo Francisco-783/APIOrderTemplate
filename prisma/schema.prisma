@@ -22,7 +22,7 @@ model AddItem { //aditives to a order, extra fries or extra meat
   orderId     Int?
 }
 
-model ClientRequest {
+model ClientRequest { // se necesita saber bien las integraciones para ver que datos hacen falta pero por ahora esta bien
   id          Int         @id @default(autoincrement())
   createdAt   DateTime    @default(now())
   status      RequestStatus @default(PENDING)

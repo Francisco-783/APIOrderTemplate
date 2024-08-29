@@ -9,26 +9,26 @@ export class ClientRequestController {
 
   @Post()
   create(@Body() createClientRequestDto: CreateClientRequestDto) {
-    return this.clientRequestService.create(createClientRequestDto);
+    return this.clientRequestService.createClientRequest(createClientRequestDto);
   }
 
   @Get()
   findAll() {
-    return this.clientRequestService.findAll();
+    return this.clientRequestService.findAllClientRequest();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.clientRequestService.findOne(+id);
+    return this.clientRequestService.findOneClientRequest(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateClientRequestDto: UpdateClientRequestDto) {
-    return this.clientRequestService.update(+id, updateClientRequestDto);
+    return this.clientRequestService.updateClientRequest(+id, updateClientRequestDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.clientRequestService.remove(+id);
+    return this.clientRequestService.removeClientRequest(+id);
   }
 }
