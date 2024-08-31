@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAdminDto } from './admin/create-admin.dto';
-import { UpdateAdminDto } from './admin/update-admin.dto';
+import { CreateAdminDto } from 'src/dto/admin/create-admin.dto'; 
+import { UpdateAdminDto } from 'src/dto/admin/update-admin.dto'; 
 
 @Injectable()
 export class AdminService {
