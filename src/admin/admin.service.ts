@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
+import { DatabaseService } from 'src/database/database.service';
 import { CreateAdminDto } from 'src/dto/admin/create-admin.dto'; 
-import { UpdateAdminDto } from 'src/dto/admin/update-admin.dto'; 
 
 @Injectable()
 export class AdminService {
+
+  constructor(private readonly databaseModule: DatabaseService) {}
+
   create(createAdminDto: CreateAdminDto) {
-    return 'This action adds a new admin';
+
+    
   }
 
-  findAll() {
-    return `This action returns all admin`;
+  async findAll() {
+
+      try{
+
+        const allAdmins = await this.databaseModule.admin.findMany();
+
+       return allAdmins
+
+    } catch (error) {
+        console.error('Error while getting Admins:', error);
+      }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} admin`;
-  }
+  async logIn(name: string, password: string) {
+    try{
 
-  update(id: number, updateAdminDto: UpdateAdminDto) {
-    return `This action updates a #${id} admin`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} admin`;
-  }
+       return "TUCKY"
+    } catch (error) {
+        console.error('Error while getting a Order:', error);
+      }
+}
 }
