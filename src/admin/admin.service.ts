@@ -7,9 +7,20 @@ export class AdminService {
 
   constructor(private readonly databaseModule: DatabaseService) {}
 
-  create(createAdminDto: CreateAdminDto) {
+  async create(entryNewAdmin: CreateAdminDto) {
+      try{
+        const newAdmin = await this.databaseModule.admin.create({
+          data: {
+            name: entryNewAdmin.name,
+            password: entryNewAdmin.password
+          },
+        });
 
-    
+        return newAdmin
+      }
+      catch (error){
+        console.log('Error while creating a Order:', error)
+      }
   }
 
   async findAll() {
