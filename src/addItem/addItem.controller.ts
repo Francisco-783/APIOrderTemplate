@@ -19,16 +19,16 @@ export class AddItemController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.addItemService.findOne(+id);
+    return this.addItemService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdditemDto: UpdateAddItemDto) {
-    return this.addItemService.update(+id, updateAdditemDto);
+    return this.addItemService.update(id, updateAdditemDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.addItemService.remove(+id);
+    return this.addItemService.remove(id);
   }
 }

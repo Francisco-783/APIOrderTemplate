@@ -19,16 +19,16 @@ export class ExtraController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string) {
-    return this.extraService.findOneExtra(+id);
+    return this.extraService.findOneExtra(id);
   }
 
   @Patch(':id')
   update(@Param('id', ParseIntPipe) id: string, @Body(ValidationPipe) updateExtraDto: UpdateExtraDto) {
-    return this.extraService.editExtra(+id, updateExtraDto);
+    return this.extraService.editExtra(id, updateExtraDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: string) {
-    return this.extraService.deleteExtra(+id);
+    return this.extraService.deleteExtra(id);
   }
 }
