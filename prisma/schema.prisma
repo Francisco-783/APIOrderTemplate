@@ -14,19 +14,18 @@ datasource db {
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
 model AddItem { //aditives to a order, extra fries or extra meat
-  id          Int     @id @default(autoincrement())
+  id          String   @id @default(uuid()) @unique
   name        String
   limit       Float
   price       Float
   order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  orderId     Int?
+  orderId     String?
 }
 
 model ClientRequest { // se necesita saber bien las integraciones para ver que datos hacen falta pero por ahora esta bien
-  id          Int         @id @default(autoincrement())
+  id          String   @id @default(uuid()) @unique
   createdAt   DateTime    @default(now())
   status      RequestStatus @default(PENDING)
-  clientId    Int
   promos      Promo[]     @relation("ClientRequestPromos")
   orders      Order[]     @relation("ClientRequestOrders")
   extras      Extra[]     @relation("ClientRequestExtras")
@@ -40,7 +39,7 @@ enum RequestStatus {
 }
 
 model Promo {
-  id              Int              @id @default(autoincrement())
+  id              String      @id @default(uuid()) @unique
   name            String
   image           String
   visible         Boolean
@@ -48,10 +47,11 @@ model Promo {
   orders          Order[]          @relation("PromoOrders")
   extras          Extra[]          @relation("PromoExtras")
   clientRequests  ClientRequest[]  @relation("ClientRequestPromos")
+  createdBy       String
 }
 
 model Order {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid()) @unique
   name            String
   image           String
   description     String
@@ -63,7 +63,7 @@ model Order {
 }
 
 model Extra {
-  id              Int              @id @default(autoincrement())
+  id              String           @id @default(uuid()) @unique
   name            String
   image           String
   visible         Boolean
@@ -74,8 +74,8 @@ model Extra {
 
 
 model Admin {
-  id          String   @id @default(uuid())
-  name        String
+  id          String   @id @default(uuid()) @unique
+  name        String   @unique
   password    String
   createdAt   DateTime @default(now())
 }
