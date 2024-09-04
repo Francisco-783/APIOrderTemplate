@@ -19,12 +19,12 @@ export class ClientRequestController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.clientRequestService.findOneClientRequest(+id);
+    return this.clientRequestService.findOneClientRequest(id);
   }
 
   @Patch(':id') //update state of the request (PENDING, IN_PROGRESS, REJECTED, COMPLETED)
   update(@Param('id') id: string, @Body() updateClientRequestDto: UpdateClientRequestDto) {
-    return this.clientRequestService.updateClientRequest(+id, updateClientRequestDto);
+    return this.clientRequestService.updateClientRequest(id, updateClientRequestDto);
   }
 
 }

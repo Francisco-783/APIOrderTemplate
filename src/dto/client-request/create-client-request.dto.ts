@@ -4,23 +4,20 @@ import { RequestStatus } from '@prisma/client';
 
 class PromoDto {
   @IsInt()
-  id: number;
+  id: string;
 }
 
 class OrderDto {
   @IsInt()
-  id: number;
+  id: string;
 }
 
 class ExtraDto {
   @IsInt()
-  id: number;
+  id: string;
 }
 
 export class CreateClientRequestDto {
-  @IsInt()
-  clientId: number;
-
   @IsEnum(RequestStatus)
   @IsOptional()
   status?: RequestStatus;

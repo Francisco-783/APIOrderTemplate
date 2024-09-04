@@ -10,7 +10,6 @@ export class ClientRequestService {
   async createClientRequest(data: CreateClientRequestDto) {
     return await this.databaseModule.clientRequest.create({
       data: {
-        clientId: data.clientId,
         status: data.status,
         promos: {
           connect: data.promos?.map(promo => ({ id: promo.id })),
@@ -29,13 +28,13 @@ export class ClientRequestService {
     return await this.databaseModule.clientRequest.findMany();
   }
 
-  async findOneClientRequest(id: number) {
+  async findOneClientRequest(id: string) {
     return await this.databaseModule.clientRequest.findUnique({
       where: { id },
     });
   }
 
-  async updateClientRequest(id: number, updateClientRequestDto: UpdateClientRequestDto) {
+  async updateClientRequest(id: string, updateClientRequestDto: UpdateClientRequestDto) {
     return await this.databaseModule.clientRequest.update({
       where: { id },
       data: updateClientRequestDto,
