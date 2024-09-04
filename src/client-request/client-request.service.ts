@@ -42,9 +42,4 @@ export class ClientRequestService {
     });
   }
 
-  async removeClientRequest(id: number) {
-    return await this.databaseModule.clientRequest.delete({
-      where: { id },
-    });
-  }
 }
