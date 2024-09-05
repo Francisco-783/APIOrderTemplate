@@ -95,17 +95,18 @@ export class PromoService {
         }
       }
 
-    async updatePromoVisibility(id:string, visible: boolean){
-      try {
-        const updatedPromo = await this.databaseModule.promo.update({
-          where: { id },
-          data: { visible },
-        });;
-    
-        return updatedPromo;
-      } catch (error) {
-        console.error("Error deleting Promo:", error);
+      async updatePromoVisibility(id: string, visible: boolean) {
+        try {
+          const updatedPromo = await this.databaseModule.promo.update({
+            where: { id },
+            data: { visible: visible }
+          });
+      
+          return updatedPromo;
+        } catch (error) {
+          console.error("Error updating Promo visibility:", error);
+          throw error;
+        }
       }
-    }
 
 }

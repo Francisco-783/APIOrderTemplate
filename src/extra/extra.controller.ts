@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe, Query } from '@nestjs/common';
 import { ExtraService } from './extra.service';
 import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
 import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
@@ -28,7 +28,11 @@ export class ExtraController {
   }
 
   @Delete(':id')
-  remove(@Param("id") @Body(ValidationPipe) id:string, visible:boolean) {
-    return this.extraService.updateExtraVisibility(id, visible);
+  remove(
+    @Param("id") id: string,
+    @Query('visible') visible: string
+  ) {
+    const isVisible = visible === 'true';
+    return this.extraService.updateExtraVisibility(id, isVisible);
   }
 }

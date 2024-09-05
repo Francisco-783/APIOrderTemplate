@@ -32,8 +32,12 @@ export class OrderController {
    }
 
    @Delete(":id") //DELETE /order/:id // falta agregar comprobacion que es el admin
-   updateOrderVisibility(@Param("id") @Body(ValidationPipe) id:string, visible:boolean){
-    return this.orderService.updateOrderVisibility(id, visible)
+   updateOrderVisibility(
+      @Param("id") id: string,
+      @Query('visible') visible: string
+    ) {
+      const isVisible = visible === 'true';
+    return this.orderService.updateOrderVisibility(id, isVisible)
    }
 
 }

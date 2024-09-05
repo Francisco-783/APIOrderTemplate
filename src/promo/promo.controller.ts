@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { PromoService } from './promo.service';
 import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
 import { UpdateOrderDTO } from 'src/dto/order/update-order.dto'; 
@@ -29,10 +29,13 @@ export class PromoController {
          return this.PromoService.editPromo(id, editedPromo)
     }
  
-    @Delete(":id")  // DELETE -/promo/:IdAdmin
-    updatePromoVisibility(@Param("id") @Body(ValidationPipe) id:string, visible:boolean){
-     return this.PromoService.updatePromoVisibility(id, visible)
-    }
-    
+    @Delete(":id")
+   updatePromoVisibility(
+      @Param("id") id: string,
+      @Query('visible') visible: string
+   ) {
+      const isVisible = visible === 'true';
+      return this.PromoService.updatePromoVisibility(id, isVisible);
+   }
 
 }
