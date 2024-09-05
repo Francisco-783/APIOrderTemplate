@@ -60,6 +60,7 @@ model Order {
   promos          Promo[]          @relation("PromoOrders")
   addItems        AddItem[]
   clientRequests  ClientRequest[]  @relation("ClientRequestOrders")
+  createdBy       String
 }
 
 model Extra {
@@ -70,6 +71,7 @@ model Extra {
   price           Int
   promos          Promo[]          @relation("PromoExtras")
   clientRequests  ClientRequest[]  @relation("ClientRequestExtras")
+  createdBy       String
 }
 
 
