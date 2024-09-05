@@ -1,14 +1,14 @@
-import { IsString, IsUrl, IsNotEmpty, IsBoolean, IsArray, IsOptional, ValidateNested, IsNumber } from "class-validator";
+import { IsString, IsUrl, IsNotEmpty, IsBoolean, IsArray, IsOptional, ValidateNested, IsNumber, isString } from "class-validator";
 import { Type } from "class-transformer";
 
 class ConnectExtra {
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 }
 
 class ConnectOrder {
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 }
 
 export class CreatePromoDTO {
@@ -35,4 +35,8 @@ export class CreatePromoDTO {
   @ValidateNested({ each: true })
   @Type(() => ConnectOrder)
   ordersToConnect: ConnectOrder[];
+
+  @IsString()
+  @IsNotEmpty()
+  createdBy: string
 }

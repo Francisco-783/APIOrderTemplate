@@ -11,19 +11,31 @@ class CreateAddItemDTO {
   }
 
   class AddItemDone {
-    id: number
+    @IsString()
+    id: string
   }
   
 export  class CreateOrderDTO {
     @IsNotEmpty()
     price: number;
+
     @IsString()
     @IsNotEmpty()
     name: string;
+
     @IsUrl()
     image: string;
+
     description: string;
+
     visible: boolean;
+
     createAddItem?: CreateAddItemDTO[];
     addItemsToConnect: AddItemDone[]
+
+    
+  @IsString()
+  @IsNotEmpty()
+  createdBy: string
+  
   }
