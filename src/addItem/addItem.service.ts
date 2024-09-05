@@ -17,20 +17,20 @@ export class AddItemService {
     return await this.prisma.addItem.findMany();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     return await this.prisma.addItem.findUnique({
       where: { id },
     });
   }
 
-  async update(id: number, updateAdditemDto: UpdateAddItemDto) {
+  async update(id: string, updateAdditemDto: UpdateAddItemDto) {
     return await this.prisma.addItem.update({
       where: { id },
       data: updateAdditemDto,
     });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return await this.prisma.addItem.delete({
       where: { id },
     });
