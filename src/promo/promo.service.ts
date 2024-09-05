@@ -25,7 +25,7 @@ export class PromoService {
 
     }
 
-    async findOnePromo(id:number){
+    async findOnePromo(id:string){
         try{
             const onePromo = await this.databaseModule.promo.findUnique({
                 where: {
@@ -51,6 +51,7 @@ export class PromoService {
                   name: promo.name,
                   image: promo.image,
                   visible: promo.visible,
+                  createdBy: promo.createdBy,
                   orders: {
                     connect: promo.ordersToConnect
                   },
@@ -67,7 +68,7 @@ export class PromoService {
           }
     }
 
-    async editPromo(id: number, updateData) {
+    async editPromo(id: string, updateData) {
         try {
           const updatedPromo = await this.databaseModule.promo.update({
             where: {
@@ -94,13 +95,14 @@ export class PromoService {
         }
       }
 
-    async deletePromo(id:number){
+    async updatePromoVisibility(id:string, visible: boolean){
       try {
-        const deletedPromo = await this.databaseModule.promo.delete({
+        const updatedPromo = await this.databaseModule.promo.update({
           where: { id },
-        });
+          data: { visible },
+        });;
     
-        return deletedPromo;
+        return updatedPromo;
       } catch (error) {
         console.error("Error deleting Promo:", error);
       }

@@ -17,7 +17,7 @@ export class OrderController {
 
 
    @Get(":id") //GET /order/:id
-   findOneOrder(@Param("id", ParseIntPipe) id:number){
+   findOneOrder(@Param("id") id:string){
       return this.orderService.findOneOrder(id)
    }
 
@@ -27,13 +27,13 @@ export class OrderController {
    }
 
    @Patch(":id") //PATCH /order/:id // falta agregar comprobacion que es el admin
-   editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
+   editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id") id:string ){
         return this.orderService.editOrder(id , editedOrder)
    }
 
    @Delete(":id") //DELETE /order/:id // falta agregar comprobacion que es el admin
-   deleteOrder(@Param("id", ParseIntPipe) id:number){
-    return this.orderService.deleteOrder(id)
+   updateOrderVisibility(@Param("id") @Body(ValidationPipe) id:string, visible:boolean){
+    return this.orderService.updateOrderVisibility(id, visible)
    }
 
 }

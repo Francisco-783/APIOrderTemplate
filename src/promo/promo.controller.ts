@@ -15,7 +15,7 @@ export class PromoController {
  
  
     @Get(":id")  // GET -/promo/:idPromo
-    findOne(@Param("id", ParseIntPipe) id:number){
+    findOne(@Param("id") id:string){
        return this.PromoService.findOnePromo(id)
     }
  
@@ -25,19 +25,14 @@ export class PromoController {
     }
  
     @Patch(":id")  // PATCH-/promo/:idProduct/:IdAdmin
-    editPromo(@Body(ValidationPipe) editedPromo: UpdateOrderDTO, @Param("id", ParseIntPipe) id:number ){
+    editPromo(@Body(ValidationPipe) editedPromo: UpdateOrderDTO, @Param("id") id:string ){
          return this.PromoService.editPromo(id, editedPromo)
     }
  
     @Delete(":id")  // DELETE -/promo/:IdAdmin
-    deletePromo(@Param("id", ParseIntPipe) id:number){
-     return this.PromoService.deletePromo(id)
+    updatePromoVisibility(@Param("id") @Body(ValidationPipe) id:string, visible:boolean){
+     return this.PromoService.updatePromoVisibility(id, visible)
     }
     
-
-//     
-
-
-
 
 }

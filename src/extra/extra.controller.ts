@@ -18,17 +18,17 @@ export class ExtraController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string) {
+  findOne(@Param('id' ) id: string) {
     return this.extraService.findOneExtra(id);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: string, @Body(ValidationPipe) updateExtraDto: UpdateExtraDto) {
+  update(@Param('id') id: string, @Body(ValidationPipe) updateExtraDto: UpdateExtraDto) {
     return this.extraService.editExtra(id, updateExtraDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.extraService.deleteExtra(id);
+  remove(@Param("id") @Body(ValidationPipe) id:string, visible:boolean) {
+    return this.extraService.updateExtraVisibility(id, visible);
   }
 }

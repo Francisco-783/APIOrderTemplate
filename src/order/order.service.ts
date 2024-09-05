@@ -40,7 +40,7 @@ export class OrderService {
 
     }
 
-    async findOneOrder(id:number){
+    async findOneOrder(id:string){
         try{
             const oneOrder = await this.databaseModule.order.findUnique({
                 where: {
@@ -65,6 +65,7 @@ export class OrderService {
                   image: order.image,
                   description: order.description,
                   visible: true,
+                  createdBy: order.createdBy,
                   addItems: {
                     connect: order.addItemsToConnect,
                     create: order.createAddItem,
@@ -79,7 +80,7 @@ export class OrderService {
           }
     }
 
-    async editOrder(id: number, editedOrder: UpdateOrderDTO) {
+    async editOrder(id: string, editedOrder: UpdateOrderDTO) {
         try {
           const updatedOrder = await this.databaseModule.order.update({
             where: { id },
@@ -101,13 +102,14 @@ export class OrderService {
         }
       }
 
-    async deleteOrder(id: number) {
+    async updateOrderVisibility(id: string, visible:boolean) {
         try {
-          const deletedOrder = await this.databaseModule.order.delete({
-            where: { id },
-          });
+          const editedOrder = await this.databaseModule.order.update({
+          where: { id },
+          data: { visible },
+        });;
       
-          return deletedOrder;
+          return editedOrder;
         } catch (error) {
           console.error("Error deleting order:", error);
         }

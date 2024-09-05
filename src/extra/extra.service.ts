@@ -21,7 +21,7 @@ export class ExtraService {
 
 }
 
-  async findOneExtra(id: number) {
+  async findOneExtra(id: string) {
         try{
             const oneExtra = await this.databaseModule.extra.findUnique({
                 where: {
@@ -42,6 +42,7 @@ export class ExtraService {
               price: entryExtra.price,
               image: entryExtra.image,
               visible: entryExtra.visible,
+              createdBy: entryExtra.createdBy,
             },
           });
           return newExtra
@@ -51,7 +52,7 @@ export class ExtraService {
       }
 }
 
-  async editExtra(id: number, entryEditExtra: UpdateExtraDto) {
+  async editExtra(id: string, entryEditExtra: UpdateExtraDto) {
     try {
       const updatedExtra = await this.databaseModule.extra.update({
         where: { id },
@@ -69,13 +70,14 @@ export class ExtraService {
     }
   }
 
-  async deleteExtra(id: number) {
+  async updateExtraVisibility(id: string, visible:boolean) {
     try {
-      const deletedExtra = await this.databaseModule.extra.delete({
+      const updatedExtra = await this.databaseModule.extra.update({
         where: { id },
+        data: { visible },
       });
   
-      return deletedExtra;
+      return updatedExtra;
     } catch (error) {
       console.error("Error while deleting Extra:", error);
     }
