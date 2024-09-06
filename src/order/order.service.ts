@@ -35,26 +35,31 @@ export class OrderService {
           });
        return allOrders
     } catch (error) {
-        console.error('Error while getting Orders:', error);
-      }
+      console.error('Error while getting all orders:', error);
+      throw error; 
+    }
 
     }
 
-    async findOneOrder(id:string){
-        try{
-            const oneOrder = await this.databaseModule.order.findUnique({
-                where: {
-                  id: id,
-                },
-                include: {
-                  addItems: true,
-                },
-              });
-           return oneOrder
-        } catch (error) {
-            console.error('Error while getting a Order:', error);
+
+    async findOneOrder(id: string) {
+      try {
+          const oneOrder = await this.databaseModule.order.findUnique({
+              where: { id },
+              include: { addItems: true },
+          });
+  
+          if (!oneOrder) {
+              throw new NotFoundException('La orden que quieres obtener no existe');
           }
-    }
+  
+          return oneOrder;
+      } catch (error) {
+          console.error('Error while getting a Order:', error);
+          throw error; 
+      }
+  }
+
 
     async createOrder(order: CreateOrderDTO) {
         try{
@@ -76,34 +81,56 @@ export class OrderService {
               return newOrder
         }
         catch (error) {
-            console.error('Error while creating Order:', error);
-          }
+          console.error('Error while creating a Order:', error);
+          throw error; 
+      }
     }
 
+
     async editOrder(id: string, editedOrder: UpdateOrderDTO) {
-        try {
-          const updatedOrder = await this.databaseModule.order.update({
-            where: { id },
-            data: {
-              name: editedOrder.name,
-              image: editedOrder.image,
-              description: editedOrder.description,
-              visible: editedOrder.visible,
-              addItems: {
-                connect: editedOrder.addItemsToConnect,
-                create: editedOrder.createAddItem,
-              },
-            },
+      try {
+
+          const orderExists = await this.databaseModule.order.findUnique({
+              where: { id },
           });
-      
-          return updatedOrder;
-        } catch (error) {
-          console.error("Error editing order:", error);
+  
+          if (!orderExists) {
+            throw new NotFoundException('La orden que quieres editar no existe');
         }
+  
+          const updatedOrder = await this.databaseModule.order.update({
+              where: { id },
+              data: {
+                  name: editedOrder.name,
+                  image: editedOrder.image,
+                  description: editedOrder.description,
+                  visible: editedOrder.visible,
+                  addItems: {
+                      connect: editedOrder.addItemsToConnect,
+                      create: editedOrder.createAddItem,
+                  },
+              },
+          });
+  
+          return updatedOrder;
+      } catch (error) {
+          console.error("Error editing order:", error);
+          throw error; 
+      }
+  }
+  
+
+    async updateOrderVisibility(id: string, visible:boolean) { //delete function
+        try {
+
+          const orderExists = await this.databaseModule.order.findUnique({
+            where: { id },
+        });
+
+        if (!orderExists) {
+          throw new NotFoundException('La orden que quieres editar no existe');
       }
 
-    async updateOrderVisibility(id: string, visible:boolean) {
-        try {
           const editedOrder = await this.databaseModule.order.update({
           where: { id },
           data: { visible },
@@ -111,8 +138,9 @@ export class OrderService {
       
           return editedOrder;
         } catch (error) {
-          console.error("Error deleting order:", error);
-        }
+          console.error('Error while deleting a Order:', error);
+          throw error;  
+      }
       }
 
 }

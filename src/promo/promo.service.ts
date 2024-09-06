@@ -20,10 +20,13 @@ export class PromoService {
           });
        return allPromos
     } catch (error) {
-        console.error('Error while getting Promos:', error);
-      }
+      console.error('Error while getting all promos:', error);
+      throw error; 
+    }
 
     }
+
+
 
     async findOnePromo(id:string){
         try{
@@ -36,11 +39,19 @@ export class PromoService {
                     extras: true,
                 },
               });
+
+              if (!onePromo) {
+                throw new NotFoundException('La Promo que quieres obtener no existe');
+            }
+
            return onePromo
         } catch (error) {
-            console.error('Error while getting a Promo:', error);
-          }
+          console.error('Error while getting a Promo:', error);
+          throw error; 
+      }
     }
+
+
 
 
     async createPromo(promo: CreatePromoDTO) {
@@ -64,12 +75,26 @@ export class PromoService {
               return newOrder
         }
         catch (error) {
-            console.error('Error while creating Promo:', error);
-          }
+      console.error('Error while creating a promo:', error);
+      throw error; 
     }
+    }
+
+
 
     async editPromo(id: string, updateData) {
         try {
+
+          const promoExists = await this.databaseModule.promo.findUnique({
+            where: { id },
+        });
+
+        if (!promoExists) {
+          throw new NotFoundException('La promo que quieres editar no existe');
+      }
+
+
+
           const updatedPromo = await this.databaseModule.promo.update({
             where: {
               id: id,
@@ -90,12 +115,23 @@ export class PromoService {
           });
           return updatedPromo;
         } catch (error) {
-          console.error('Error updating promo:', error);
-          throw new Error('Failed to update promo');
-        }
+          console.error("Error editing promo:", error);
+          throw error; 
+      }
       }
 
+
+
       async updatePromoVisibility(id: string, visible: boolean) {
+
+        const promoExists = await this.databaseModule.promo.findUnique({
+          where: { id },
+      });
+
+      if (!promoExists) {
+        throw new NotFoundException('La promo que quieres editar no existe');
+    }
+    
         try {
           const updatedPromo = await this.databaseModule.promo.update({
             where: { id },
@@ -108,5 +144,6 @@ export class PromoService {
           throw error;
         }
       }
+
 
 }

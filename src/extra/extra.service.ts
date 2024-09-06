@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
 import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
@@ -9,17 +9,21 @@ export class ExtraService {
   constructor(private readonly databaseModule: DatabaseService) {}
 
 
-  async findAllExtra() {//if is USER only have to get the visible ones
+  async findAllExtra() {
     try{
 
     const allExtras = await this.databaseModule.extra.findMany();
 
    return allExtras
 } catch (error) {
-    console.error('Error while getting Extras:', error);
-  }
+  console.error('Error while getting all extras:', error);
+  throw error; 
+}
+
 
 }
+
+
 
   async findOneExtra(id: string) {
         try{
@@ -28,11 +32,19 @@ export class ExtraService {
                   id: id,
                 },
               });
+
+              if (!oneExtra) {
+                throw new NotFoundException('La extra que quieres obtener no existe');
+            }
+
            return oneExtra
         } catch (error) {
-            console.error('Error while getting a Extra:', error);
-          }
+          console.error('Error while getting a extra:', error);
+          throw error; 
+      }
     }
+
+
 
   async createExtra(entryExtra: CreateExtraDto) {
     try{
@@ -48,12 +60,23 @@ export class ExtraService {
           return newExtra
     }
     catch (error) {
-        console.error('Error while creating Extra:', error);
-      }
+      console.error('Error while creating a extra:', error);
+      throw error; 
+  }
 }
+
 
   async editExtra(id: string, entryEditExtra: UpdateExtraDto) {
     try {
+
+      const extraExists = await this.databaseModule.extra.findUnique({
+        where: { id },
+    });
+
+    if (!extraExists) {
+      throw new NotFoundException('La extra que quieres editar no existe');
+  }
+
       const updatedExtra = await this.databaseModule.extra.update({
         where: { id },
         data: {
@@ -66,12 +89,23 @@ export class ExtraService {
   
       return updatedExtra;
     } catch (error) {
-      console.error("Error while editing Extra:", error);
-    }
+      console.error("Error editing extra:", error);
+      throw error; 
   }
+  }
+
+  
 
   async updateExtraVisibility(id: string, visible:boolean) {
     try {
+
+      const extraExists = await this.databaseModule.extra.findUnique({
+        where: { id },
+    });
+
+    if (!extraExists) {
+      throw new NotFoundException('La extra que quieres editar no existe');
+  }
       const updatedExtra = await this.databaseModule.extra.update({
         where: { id },
         data: { visible },
@@ -79,7 +113,8 @@ export class ExtraService {
   
       return updatedExtra;
     } catch (error) {
-      console.error("Error while deleting Extra:", error);
-    }
+      console.error('Error while deleting a extra:', error);
+      throw error;  
+  }
   }
 }
