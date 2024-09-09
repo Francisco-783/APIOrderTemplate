@@ -33,7 +33,12 @@ export class ClientRequestService {
 
   async findAllClientRequest() {
     try {
-      return await this.databaseModule.clientRequest.findMany();
+      return await this.databaseModule.clientRequest.findMany({        
+        include: {
+        extras:true, 
+        orders:true,
+        promos:true }
+      });
     } catch (error) {
       console.error('Error while getting all Client Requests:', error);
       throw error; 
@@ -45,6 +50,10 @@ export class ClientRequestService {
     try {
       const clientRequest = await this.databaseModule.clientRequest.findUnique({
         where: { id },
+        include: {
+          extras:true, 
+          orders:true,
+          promos:true }
       });
 
       if (!clientRequest) {
