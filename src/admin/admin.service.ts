@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateAdminDto } from 'src/dto/admin/create-admin.dto'; 
 
@@ -9,17 +9,26 @@ export class AdminService {
 
   async create(entryNewAdmin: CreateAdminDto) {
       try{
-        const newAdmin = await this.databaseModule.admin.create({
-          data: {
-            name: entryNewAdmin.name,
-            password: entryNewAdmin.password
-          },
-        });
+        const adminExists = await this.databaseModule.admin.findUnique({
+          where: { name: entryNewAdmin.name },
+      });
+      if (!adminExists){
+          const newAdmin = await this.databaseModule.admin.create({
+            data: {
+              name: entryNewAdmin.name,
+              password: entryNewAdmin.password
+            },
+          });
 
-        return newAdmin
+          return newAdmin
       }
-      catch (error){
-        console.log('Error while creating a Order:', error)
+      else {
+        throw new BadRequestException('Error: name already in use');
+      }
+      }
+      catch (error) {
+        console.error('Error while creting admin:', error);
+        throw error; 
       }
   }
 
