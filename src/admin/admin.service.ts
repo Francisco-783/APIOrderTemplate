@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateAdminDto } from 'src/dto/admin/create-admin.dto'; 
 
@@ -31,6 +31,24 @@ export class AdminService {
         throw error; 
       }
   }
+
+  async findOneAdmin(name: string) {
+    try {
+        const oneOrder = await this.databaseModule.admin.findUnique({
+            where: { name },
+            
+        });
+
+        if (!oneOrder) {
+            throw new NotFoundException('No admin has that name');
+        }
+
+        return oneOrder;
+    } catch (error) {
+        console.error('Error while getting a Order:', error);
+        throw error; 
+    }
+}
 
   async findAll() {
 
