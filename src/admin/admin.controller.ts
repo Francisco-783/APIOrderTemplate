@@ -15,11 +15,4 @@ export class AdminController {
   findAll() {
     return this.adminService.findAll();
   }
-
-  @Get()
-  logIn(@Body() name: string, password: string) {
-    return this.adminService.logIn(name, password);
-  }
-
-
 }

@@ -63,12 +63,4 @@ export class AdminService {
       }
   }
 
-  async logIn(name: string, password: string) {
-    try{
-
-       return "TUCKY"
-    } catch (error) {
-        console.error('Error while getting a Order:', error);
-      }
-}
 }
