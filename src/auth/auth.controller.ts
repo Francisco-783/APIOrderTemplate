@@ -10,6 +10,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: LoginAdminDto) {
-    return this.authService.signIn(signInDto.name, signInDto.password); // TEST COMMIT
+    return this.authService.signIn(signInDto.name, signInDto.password); 
   }
 }
