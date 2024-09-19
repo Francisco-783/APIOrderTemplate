@@ -8,7 +8,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     AdminModule,
-    ConfigModule.forRoot(), // Habilitar el uso de variables de entorno
+    ConfigModule.forRoot(), 
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
