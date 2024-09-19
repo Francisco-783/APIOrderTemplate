@@ -34,8 +34,12 @@ export class AdminService {
 
   async findOneAdmin(name: string) {
     try {
+
+      if (name === undefined) {
+        throw new BadRequestException('The "name" field is required.');
+      }
         const oneOrder = await this.databaseModule.admin.findUnique({
-            where: { name },
+            where: { name: name },
             
         });
 
