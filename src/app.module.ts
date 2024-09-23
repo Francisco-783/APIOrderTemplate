@@ -13,6 +13,7 @@ import { AddItemModule } from './addItem/addItem.module';
 import { ClientRequestModule } from './client-request/client-request.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [OrderModule, DatabaseModule, ThrottlerModule.forRoot([{
@@ -24,6 +25,10 @@ import { AuthModule } from './auth/auth.module';
   providers: [AppService, {
     provide: APP_GUARD,
     useClass: ThrottlerGuard
-  }],
+  },
+  {
+    provide: APP_GUARD,
+    useClass: AuthGuard, // Añades el AuthGuard de autenticación
+  },],
 })
 export class AppModule {}
