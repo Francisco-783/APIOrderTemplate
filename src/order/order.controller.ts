@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe,
 import { OrderService } from './order.service';
 import { CreateOrderDTO } from 'src/dto/order/create-order.dto';
 import { UpdateOrderDTO } from 'src/dto/order/update-order.dto';
+import { Public } from 'src/auth/auth.guard';
 
 
 
@@ -10,12 +11,13 @@ export class OrderController {
 
    constructor(private readonly orderService: OrderService) {}
 
+   @Public()
    @Get() //Get /order
    findAllOrder(){
     return this.orderService.findAllOrder()
    }
 
-
+   @Public()
    @Get(":id") //GET /order/:id
    findOneOrder(@Param("id") id:string){
       return this.orderService.findOneOrder(id)
