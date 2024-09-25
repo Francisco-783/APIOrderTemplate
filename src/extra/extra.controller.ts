@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, Pars
 import { ExtraService } from './extra.service';
 import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
 import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
+import { Public } from 'src/auth/auth.guard';
 
 @Controller('extra')
 export class ExtraController {
@@ -12,11 +13,13 @@ export class ExtraController {
     return this.extraService.createExtra(createExtraDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.extraService.findAllExtra();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id' ) id: string) {
     return this.extraService.findOneExtra(id);

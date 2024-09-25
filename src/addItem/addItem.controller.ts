@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { AddItemService } from './addItem.service';
 import { CreateAddItemDto } from '../dto/addItem/create-addItem.dto';
 import { UpdateAddItemDto } from '../dto/addItem/update-addItem.dto';
+import { Public } from 'src/auth/auth.guard';
 
 @Controller('addItem')
 export class AddItemController {
@@ -12,11 +13,13 @@ export class AddItemController {
     return this.addItemService.create(createAdditemDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.addItemService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.addItemService.findOne(id);

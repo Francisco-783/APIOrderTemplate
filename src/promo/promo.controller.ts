@@ -2,18 +2,20 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query,
 import { PromoService } from './promo.service';
 import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
 import { UpdateOrderDTO } from 'src/dto/order/update-order.dto'; 
+import { Public } from 'src/auth/auth.guard';
 
 @Controller('promo')
 export class PromoController {
 
     constructor (private readonly PromoService: PromoService) {}
-
+   
+    @Public()
     @Get()  //GET -/promo
     findAll(){
      return this.PromoService.findAllPromo()
     }
  
- 
+    @Public()
     @Get(":id")  // GET -/promo/:idPromo
     findOne(@Param("id") id:string){
        return this.PromoService.findOnePromo(id)
@@ -30,7 +32,7 @@ export class PromoController {
     }
  
     @Delete(":id")
-   updatePromoVisibility(
+      updatePromoVisibility(
       @Param("id") id: string,
       @Query('visible') visible: string
    ) {

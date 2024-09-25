@@ -2,11 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ClientRequestService } from './client-request.service';
 import { CreateClientRequestDto } from '../dto/client-request/create-client-request.dto';
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
+import { Public } from 'src/auth/auth.guard';
 
 @Controller('client-request')
 export class ClientRequestController {
   constructor(private readonly clientRequestService: ClientRequestService) {}
 
+  @Public()
   @Post()
   create(@Body() createClientRequestDto: CreateClientRequestDto) {
     return this.clientRequestService.createClientRequest(createClientRequestDto);
