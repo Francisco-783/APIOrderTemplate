@@ -8,7 +8,7 @@ import {
   Request,
   UseGuards
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard, Public } from './auth.guard';
 import { AuthService } from './auth.service';
 import { LoginAdminDto } from 'src/dto/admin/login-admin.dto';
 
@@ -16,6 +16,7 @@ import { LoginAdminDto } from 'src/dto/admin/login-admin.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: LoginAdminDto) {
