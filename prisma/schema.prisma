@@ -40,7 +40,7 @@ enum RequestStatus {
 
 model Promo {
   id              String      @id @default(uuid()) @unique
-  name            String
+  name            String      @unique
   image           String
   visible         Boolean
   price           Int
@@ -52,7 +52,7 @@ model Promo {
 
 model Order {
   id              String           @id @default(uuid()) @unique
-  name            String
+  name            String           @unique
   image           String
   description     String
   visible         Boolean
@@ -65,7 +65,7 @@ model Order {
 
 model Extra {
   id              String           @id @default(uuid()) @unique
-  name            String
+  name            String           @unique
   image           String
   visible         Boolean
   price           Int
