@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MyLoggerService } from './my-logger/my-logger.service';
 import * as fs from 'fs';
+import { ValidationPipe } from '@nestjs/common';
 
 
 
@@ -19,6 +20,7 @@ async function bootstrap() { //this start the project
   app.useLogger(app.get(MyLoggerService))
   app.enableCors()
   app.setGlobalPrefix("api")
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
 bootstrap();
