@@ -29,6 +29,8 @@ model ClientRequest { // se necesita saber bien las integraciones para ver que d
   promos      Promo[]     @relation("ClientRequestPromos")
   orders      Order[]     @relation("ClientRequestOrders")
   extras      Extra[]     @relation("ClientRequestExtras")
+  delivery    Boolean     @default(true)
+  totalPrice  Int
 }
 
 enum RequestStatus {

@@ -39,4 +39,7 @@ export class CreateClientRequestDto {
   @Type(() => ExtraDto)
   @IsOptional()
   extras?: ExtraDto[];
+
+
+  delivery: boolean;
 }
