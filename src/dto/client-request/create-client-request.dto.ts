@@ -1,19 +1,19 @@
-import { IsInt, IsOptional, IsEnum, IsArray, ValidateNested } from 'class-validator';
+import {  IsOptional, IsEnum, IsArray, ValidateNested, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { RequestStatus } from '@prisma/client';
 
 class PromoDto {
-  @IsInt()
+  @IsString()
   id: string;
 }
 
 class OrderDto {
-  @IsInt()
+  @IsString()
   id: string;
 }
 
 class ExtraDto {
-  @IsInt()
+  @IsString()
   id: string;
 }
 

@@ -25,7 +25,6 @@ export class CreatePromoDTO {
   @IsBoolean()
   visible: boolean;
 
-  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ConnectExtra)
