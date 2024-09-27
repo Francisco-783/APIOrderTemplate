@@ -14,7 +14,11 @@ export class PromoService {
         try{
         const allPromos = await this.databaseModule.promo.findMany({
             include: {
-              orders: true, 
+              orders: {
+                include:{
+                  addItems:true
+                }
+              } ,
               extras: true,
             },
           });
@@ -35,7 +39,11 @@ export class PromoService {
                   id: id,
                 },
                 include: {
-                    orders: true, 
+                  orders: {
+                    include:{
+                      addItems:true
+                    }
+                  },
                     extras: true,
                 },
               });
