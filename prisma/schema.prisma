@@ -30,7 +30,7 @@ model ClientRequest { // se necesita saber bien las integraciones para ver que d
   orders      Order[]     @relation("ClientRequestOrders")
   extras      Extra[]     @relation("ClientRequestExtras")
   delivery    Boolean     @default(true)
-  totalPrice  Int
+  totalPrice  Int         @default(0)
 }
 
 enum RequestStatus {
