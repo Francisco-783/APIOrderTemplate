@@ -10,6 +10,8 @@ class PromoDto {
 class OrderDto {
   @IsString()
   id: string;
+
+  additemId: string[];
 }
 
 class ExtraDto {
