@@ -19,6 +19,7 @@ model AddItem { //aditives to a order, extra fries or extra meat
   limit       Float
   price       Float
   order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  clientRequest  ClientRequest[]   @relation("ClientRequestAddItem")
   orderId     String?
 }
 
@@ -29,6 +30,7 @@ model ClientRequest { // se necesita saber bien las integraciones para ver que d
   promos      Promo[]     @relation("ClientRequestPromos")
   orders      Order[]     @relation("ClientRequestOrders")
   extras      Extra[]     @relation("ClientRequestExtras")
+  additems    AddItem[]   @relation("ClientRequestAddItem")
   delivery    Boolean     @default(true)
   totalPrice  Int         @default(0)
 }
@@ -60,7 +62,7 @@ model Order {
   visible         Boolean
   price           Int
   promos          Promo[]          @relation("PromoOrders")
-  addItems        AddItem[]
+  addItems        AddItem[]        
   clientRequests  ClientRequest[]  @relation("ClientRequestOrders")
   createdBy       String
 }
