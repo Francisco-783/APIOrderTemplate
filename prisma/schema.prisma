@@ -13,25 +13,37 @@ datasource db {
   url  	    = env("DATABASE_URL")
   directUrl = env("DATABASE_URL_UNPOOLED")
 }
-model AddItem { //aditives to a order, extra fries or extra meat
-  id          String   @id @default(uuid()) @unique
-  name        String
-  limit       Float
-  price       Float
-  order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  orderId     String?
+
+
+model ClientRequest {
+  id          String               @id @default(uuid()) @unique
+  createdAt   DateTime             @default(now())
+  status      RequestStatus        @default(PENDING)
+  delivery    Boolean              @default(true)
+  totalPrice  Int                  @default(0)
+
+  orders      ClientRequestOrder[] // Relación con las órdenes solicitadas
+  extras      Extra[]              @relation("ClientRequestExtras")
 }
 
-model ClientRequest { // se necesita saber bien las integraciones para ver que datos hacen falta pero por ahora esta bien
-  id          String   @id @default(uuid()) @unique
-  createdAt   DateTime    @default(now())
-  status      RequestStatus @default(PENDING)
+model ClientRequestOrder { 
+  id                String   @id @default(uuid()) @unique
+  price             Int      @default(0)
+  
+  clientRequestId   String   // ID de la solicitud del cliente
+  clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
 
-  orders      Order[]     @relation("ClientRequestOrders")
-  extras      Extra[]     @relation("ClientRequestExtras")
+  orderId           String   // ID de la orden solicitada
+  adds              ClientRequestAdds[] // Relación con los aditivos solicitados
+}
 
-  delivery    Boolean     @default(true)
-  totalPrice  Int         @default(0)
+model ClientRequestAdds { 
+  id                String   @id @default(uuid())
+  price             Int      @default(0)
+  clientRequestOrderId String   // ID de la orden solicitada
+  clientRequestOrder   ClientRequestOrder @relation(fields: [clientRequestOrderId], references: [id])
+  addItemId          String   // ID del aditivo solicitado
+  howMany           Int
 }
 
 enum RequestStatus {
@@ -61,8 +73,16 @@ model Order {
   price           Int
   promos          Promo[]          @relation("PromoOrders")
   addItems        AddItem[]        
-  clientRequests  ClientRequest[]  @relation("ClientRequestOrders")
   createdBy       String
+}
+
+model AddItem { //aditives to a order, extra fries or extra meat
+  id          String   @id @default(uuid()) @unique
+  name        String
+  limit       Float
+  price       Float
+  order       Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  orderId     String?
 }
 
 model Extra {
