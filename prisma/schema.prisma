@@ -23,7 +23,8 @@ model ClientRequest {
   totalPrice  Int                  @default(0)
 
   orders      ClientRequestOrder[] // Relación con las órdenes solicitadas
-  extras      Extra[]              @relation("ClientRequestExtras")
+  extras      ClientRequestExtra[]
+  promos      ClientRequestPromo[]           
 }
 
 model ClientRequestOrder { 
@@ -34,16 +35,37 @@ model ClientRequestOrder {
   clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
 
   orderId           String   // ID de la orden solicitada
+  isPromo           String  //if this have an id this become of a promotion (id of the request not the product)
   adds              ClientRequestAdds[] // Relación con los aditivos solicitados
+  
 }
 
 model ClientRequestAdds { 
-  id                String   @id @default(uuid())
+  id                String   @id @default(uuid()) @unique
   price             Int      @default(0)
+  idOfAdd           String
   clientRequestOrderId String   // ID de la orden solicitada
   clientRequestOrder   ClientRequestOrder @relation(fields: [clientRequestOrderId], references: [id])
   addItemId          String   // ID del aditivo solicitado
   howMany           Int
+}
+
+model ClientRequestPromo {
+  id                String   @id @default(uuid()) @unique
+  price             Int      @default(0)
+  clientRequestId   String
+  clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
+
+  idOfPromo         String
+  
+}
+
+model ClientRequestExtra {
+  id                String   @id @default(uuid()) @unique
+  price             Int      @default(0)
+  addItemId         String 
+  clientRequestId   String
+  clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
 }
 
 enum RequestStatus {
@@ -92,7 +114,6 @@ model Extra {
   visible         Boolean
   price           Int
   promos          Promo[]          @relation("PromoExtras")
-  clientRequests  ClientRequest[]  @relation("ClientRequestExtras")
   createdBy       String
 }
 
