@@ -3,12 +3,52 @@ import { CreateClientRequestDto } from '../dto/client-request/create-client-requ
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
 import { DatabaseService } from 'src/database/database.service';
 
+type requestAdd = {
+  name: string;
+  amountOf: number;
+  id: string;
+}
+
+type requestOrder = {
+  id: string;
+  name: string;
+  adds: requestAdd[]
+    }
+
+type extraRequest = {
+  extraName: string;
+  id: string;
+}
+
+  type requestPromo = {
+    promoName: string;
+    id: string;
+    ordersPromo: requestOrder[]
+    extrasPromo: extraRequest[]
+  }
+
+    type requestobject  = { //la idea de esto es representar como
+      
+      status: string;
+      orders: requestOrder[];
+      promos: requestPromo[]
+      extras: extraRequest[]
+            
+  };
+
+
 @Injectable()
 export class ClientRequestService {
   constructor(private readonly databaseModule: DatabaseService) {}
 
   async createClientRequest(data: CreateClientRequestDto) {
     try {
+      
+      //que existas los elementos recibidos (promos, orders y extras)
+      //que existan los aditivos en cada orden que requiera
+      // que se calcule el precio total,
+      // crear la request
+
   // Obtener los elementos existentes
   const promosExist = await this.databaseModule.promo.findMany({
     where: {
@@ -88,7 +128,11 @@ const totalPrice = [
       return await this.databaseModule.clientRequest.findMany({        
         include: {
         extras:true, 
-        orders:true,
+        orders:{
+          include: {
+            addItems: true
+          }
+        },
         promos:true 
       }
       });
@@ -138,6 +182,22 @@ const totalPrice = [
       });
     } catch (error) {
       console.error('Error while updating Client Request:', error);
+      throw error; 
+    }
+  }
+
+  // this is only testing shit
+
+
+
+  async trying(object: requestobject) { //la idea es que esto reciba y cree la request
+    try {
+      let returnThis = {
+      }
+
+      
+    } catch (error) {
+      console.error('Error PUTO:', error);
       throw error; 
     }
   }
