@@ -1,47 +1,69 @@
-import {  IsOptional, IsEnum, IsArray, ValidateNested, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { RequestStatus } from '@prisma/client';
 
-class PromoDto {
+class CreateClientRequestAddsDto {
   @IsString()
-  id: string;
+  @IsNotEmpty()
+  idOfAdd: string;
+
+  @IsString()
+  @IsNotEmpty()
+  addItemId: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  howMany: number;
 }
 
-class OrderDto {
+class CreateClientRequestOrderDto {
   @IsString()
-  id: string;
+  @IsNotEmpty()
+  orderId: string;
 
-  additemId: string[];
+  @IsString()
+  @IsOptional()
+  isPromo?: string; // Es opcional ya que no todas las órdenes tienen promociones
+
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestAddsDto)
+  adds: CreateClientRequestAddsDto[];
 }
 
-class ExtraDto {
+class CreateClientRequestPromoDto {
   @IsString()
-  id: string;
+  @IsNotEmpty()
+  idOfPromo: string;
+
+
+}
+
+class CreateClientRequestExtraDto {
+  @IsString()
+  @IsNotEmpty()
+  extraId: string;
 }
 
 export class CreateClientRequestDto {
-  @IsEnum(RequestStatus)
-  @IsOptional()
-  status?: RequestStatus;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => PromoDto)
-  @IsOptional()
-  promos?: PromoDto[];
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => OrderDto)
-  @IsOptional()
-  orders?: OrderDto[];
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => ExtraDto)
-  @IsOptional()
-  extras?: ExtraDto[];
-
-
+  @IsBoolean()
+  @IsNotEmpty()
   delivery: boolean;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestOrderDto)
+  orders: CreateClientRequestOrderDto[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestExtraDto)
+  @IsOptional()
+  extras?: CreateClientRequestExtraDto[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestPromoDto)
+  @IsOptional()
+  promos?: CreateClientRequestPromoDto[];
 }
