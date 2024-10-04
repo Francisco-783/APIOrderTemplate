@@ -4,39 +4,6 @@ import { CreateClientRequestDto } from '../dto/client-request/create-client-requ
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
 import { Public } from 'src/auth/auth.guard';
 
-type requestAdd = {
-  name: string;
-  amountOf: number;
-  id: string;
-}
-
-type requestOrder = {
-  id: string;
-  name: string;
-  adds: requestAdd[]
-    }
-
-type extraRequest = {
-  extraName: string;
-  id: string;
-}
-
-  type requestPromo = {
-    promoName: string;
-    id: string;
-    ordersPromo: requestOrder[]
-    extrasPromo: extraRequest[]
-  }
-
-    type requestobject  = { //la idea de esto es representar como
-      
-      status: string;
-      orders: requestOrder[];
-      promos: requestPromo[]
-      extras: extraRequest[]
-            
-  };
-//BORRAR ESTO
 
 @Controller('client-request')
 export class ClientRequestController {
@@ -63,9 +30,4 @@ export class ClientRequestController {
     return this.clientRequestService.updateClientRequest(id, updateClientRequestDto);
   }
 
-  @Public()
-  @Post("testing")
-  testingnewCreate(@Body() objectHolder: requestobject) {
-    return this.clientRequestService.trying(objectHolder);
-  }
 }
