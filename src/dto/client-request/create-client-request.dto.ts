@@ -20,12 +20,8 @@ class CreateClientRequestOrderDto {
   @IsNotEmpty()
   orderId: string;
 
-  @IsString()
-  @IsOptional()
-  isPromo?: string; // Es opcional ya que no todas las órdenes tienen promociones
-
-
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateClientRequestAddsDto)
   adds: CreateClientRequestAddsDto[];
@@ -34,15 +30,27 @@ class CreateClientRequestOrderDto {
 class CreateClientRequestPromoDto {
   @IsString()
   @IsNotEmpty()
-  idOfPromo: string;
+  promoId: string;
 
 
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestOrderDto)
+  promoAdds: promoadds[];
 }
 
 class CreateClientRequestExtraDto {
   @IsString()
   @IsNotEmpty()
   extraId: string;
+
+}
+
+class promoadds {
+  @IsOptional()
+  idOrder: string
+  @IsOptional()
+  adds: string[]
 }
 
 export class CreateClientRequestDto {
