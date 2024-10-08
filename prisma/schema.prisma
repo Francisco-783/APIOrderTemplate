@@ -63,6 +63,7 @@ model ClientRequestExtra {
   extraId         String 
   clientRequestId   String
   clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
+  isPromo           String
 }
 
 enum RequestStatus {
