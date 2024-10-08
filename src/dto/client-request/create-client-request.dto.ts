@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 class CreateClientRequestAddsDto {
   @IsString()
   @IsNotEmpty()
-  idOfAdd: string;
+  addId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -35,8 +35,27 @@ class CreateClientRequestPromoDto {
 
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => CreateClientRequestOrderDto)
-  promoAdds: promoadds[];
+  @Type(() => ordersPromo)
+  orders: ordersPromo[];
+}
+
+class ordersPromo { 
+  @IsOptional()
+  idOrder: string
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => promoAdds)
+  adds: promoAdds[]
+}
+
+class promoAdds  {
+  @IsString()
+  @IsNotEmpty()
+  addId:string
+
+  @IsInt()
+  @IsNotEmpty()
+  howMany: number
 }
 
 class CreateClientRequestExtraDto {
@@ -46,12 +65,7 @@ class CreateClientRequestExtraDto {
 
 }
 
-class promoadds {
-  @IsOptional()
-  idOrder: string
-  @IsOptional()
-  adds: string[]
-}
+
 
 export class CreateClientRequestDto {
   @IsBoolean()
