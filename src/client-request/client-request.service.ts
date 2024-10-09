@@ -20,22 +20,27 @@ export class ClientRequestService {
     
     try {
       let totalprice = 0;
-    
+      let requestReturn = {
+        orders: [],
+        extras: [],
+        Promos: []
+      }
       const promoCheck = {
         promos: data.promos ? await Promise.all(
-          data.promos.map(async promo => {
+          data.promos.map(async (promo) => {
             const foundPromo = await this.promoService.findOnePromo(promo.promoId);
-            
-            return foundPromo;
+            promo.orders.map(async (order) => {
+              const foundorder = await this.promoService.findOnePromo(order.idOrder);
+            })
           })
         ) : []
       };
     
       const orderCheck = {
-        tumama: "tumama"
+        order: "order"
       };
     
-      return promoCheck;
+      return requestReturn;
     }catch (error) {
       console.error('Error while creating Client Request:', error);
       throw error;
