@@ -35,9 +35,9 @@ model ClientRequestOrder {
   clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
 
   orderId           String   // ID de la orden solicitada
-  isPromo           String  //if this have an id this become of a promotion (id of the request not the product)
   adds              ClientRequestAdds[] // Relación con los aditivos solicitados
-  
+  promoId              String
+  clientRequestPromo   ClientRequestPromo @relation(fields: [promoId], references: [id])
 }
 
 model ClientRequestAdds { 
@@ -55,6 +55,8 @@ model ClientRequestPromo {
   clientRequestId   String
   clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
   promoId        String 
+  orders            ClientRequestOrder[]
+  extras            ClientRequestExtra[]
 }
 
 model ClientRequestExtra {
@@ -63,7 +65,8 @@ model ClientRequestExtra {
   extraId         String 
   clientRequestId   String
   clientRequest     ClientRequest @relation(fields: [clientRequestId], references: [id])
-  isPromo           String
+  promoId              String
+  clientRequestPromo   ClientRequestPromo @relation(fields: [promoId], references: [id])
 }
 
 enum RequestStatus {
