@@ -6,10 +6,6 @@ class CreateClientRequestAddsDto {
   @IsNotEmpty()
   addId: string;
 
-  @IsString()
-  @IsNotEmpty()
-  addItemId: string;
-
   @IsInt()
   @IsNotEmpty()
   howMany: number;
