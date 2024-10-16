@@ -26,38 +26,62 @@ export class ClientRequestService {
         promos: []
       }
 
-      function filterClientAdds(order, orderRequest) {
+      function filterClientAdds(orderDBAdds, orderRequest) {
 
-        // return order.addItems.filter(add => )
-              
+        const filteredOrders = orderDBAdds.filter(add => orderRequest.adds.includes(add.id))
+          
+        filteredOrders.forEach(obj => {
+          const matchingIdObj = orderRequest.find(idObj => idObj.id === obj.id);
+          if (matchingIdObj) {
+            Object.assign(obj, matchingIdObj); // Copia los campos del objeto coincidente
+          }
+        });
+
+        return filteredOrders;
       }
 
-      async function processPromos(data): Promise<void> {
+         //PROMO PROCESS------------------------------------------------------
         if (data.promos) {
           await Promise.all(
             data.promos.map(async (promo) => {
               const foundPromo = await this.promoService.findOnePromo(promo.promoId);
-      
+              let entryData = promo
               // Sumar el precio de la promoción al total
               totalprice += foundPromo.price;
       
+              
+
               // Crear el array de órdenes relacionadas con la promoción
-              const ordersPromo = foundPromo.orders.map((order) => ({
-                price: 0,
-                orderid: order.id,
-                adds: filterClientAdds(order, "w"),
-              }));
-      
+              const ordersPromo = foundPromo.orders.map((order) => {
+                // Definir `orderRequest` antes de retornar el objeto
+                const orderRequest = entryData.orders.splice(entryData.orders.findIndex(u => u.idOrder === order.id), 1)[0];
+              
+                return {
+                  price: 0,
+                  orderid: order.id,
+                  adds: orderRequest.adds ? filterClientAdds(order.addItems, orderRequest.adds) : [],
+                };
+              });
+              
+              const extraPromo =  foundPromo.extras.map((extra) => {
+                return{
+                  extraId: extra.id,
+                  price: 0,
+                }
+              })
+              
+
               // Agregar la promoción confirmada a la colección
               confirmedData.promos.push({
                 price: foundPromo.price,
                 promoid: foundPromo.id,
                 ordersPromo,
+                extraPromo
               });
             })
           );
         }
-      }
+    //----------------------------------------------------------------------  
     
       const orderCheck = {
         order: "order"
