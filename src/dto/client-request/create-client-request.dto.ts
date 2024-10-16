@@ -33,6 +33,11 @@ class CreateClientRequestPromoDto {
   @ValidateNested({ each: true })
   @Type(() => ordersPromo)
   orders: ordersPromo[];
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateClientRequestExtraDto)
+  extras: CreateClientRequestExtraDto[];
 }
 
 class ordersPromo { 
