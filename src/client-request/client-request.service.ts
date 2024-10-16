@@ -28,14 +28,18 @@ export class ClientRequestService {
 
       function filterClientAdds(orderDBAdds, orderRequest) {
 
-        const filteredOrders = orderDBAdds.filter(add => orderRequest.adds.includes(add.id))
+        const filteredOrders = orderDBAdds.filter(add => orderRequest.includes(add.id))
           
-        filteredOrders.forEach(obj => {
-          const matchingIdObj = orderRequest.find(idObj => idObj.id === obj.id);
+        filteredOrders.forEach(adds => {
+          const matchingIdObj = orderRequest.find(idObj => idObj.id === adds.id);
           if (matchingIdObj) {
-            Object.assign(obj, matchingIdObj); // Copia los campos del objeto coincidente
+            Object.assign(adds, matchingIdObj); // Copia los campos del objeto coincidente
           }
         });
+
+        filteredOrders.map(adds => {
+          totalprice =+ adds.price * adds.howMany
+        })
 
         return filteredOrders;
       }
@@ -82,11 +86,25 @@ export class ClientRequestService {
           );
         }
     //----------------------------------------------------------------------  
+    //ORDER PROCESS------------------------------------------------------
+      if (data.orders)
+        {
+
+      }
     
-      const orderCheck = {
-        order: "order"
-      };
-    
+    //---------------------------------------------------------------------- 
+    //EXTRA PROCESS------------------------------------------------------
+      if (data.extras)
+      {
+
+      }
+
+    //---------------------------------------------------------------------- 
+    //DELIVERY PROCESS------------------------------------------------------
+    if (data.delivery){
+      totalprice += 1000
+    }
+
       const createdClientRequest = await this.databaseService.clientRequest.create({
         data:{
           delivery: data.delivery,
