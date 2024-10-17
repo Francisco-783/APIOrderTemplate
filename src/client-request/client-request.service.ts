@@ -138,7 +138,24 @@ export class ClientRequestService {
 
     //CREATING PROCESS------------------------------------------------------
       const createdClientRequest = await this.databaseService.clientRequest.create({
-        data:{},
+        data:{
+          delivery: data.delivery,
+          totalPrice: totalprice,
+          orders: {
+            create: confirmedData.orders
+          },
+          extras: {
+            create: confirmedData.extras
+          },
+          promos: {
+            create: confirmedData.promos.map((promo) => ({
+              price: promo.price,
+              promoId: promo.id,
+              orders:promo.ordersPromo? {create: promo.ordersPromo}:{} ,
+              extras:promo.extraPromo? {create: promo.extraPromo} : {}
+            })),
+          },
+        },
       });
 
       return createdClientRequest
