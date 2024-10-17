@@ -6,7 +6,8 @@ import { DatabaseModule } from 'src/database/database.module';
 @Module({
     imports: [DatabaseModule],
     controllers: [OrderController],
-    providers: [OrderService]
+    providers: [OrderService],
+    exports: [OrderService]
 })
 
 export class OrderModule {}
