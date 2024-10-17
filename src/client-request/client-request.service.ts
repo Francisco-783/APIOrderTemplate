@@ -3,6 +3,8 @@ import { CreateClientRequestDto } from '../dto/client-request/create-client-requ
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
 import { DatabaseService } from 'src/database/database.service';//prisma
 import { PromoService } from 'src/promo/promo.service';
+import { OrderService } from 'src/order/order.service';
+import { ExtraService } from 'src/extra/extra.service';
 
 
 
@@ -10,7 +12,9 @@ import { PromoService } from 'src/promo/promo.service';
 export class ClientRequestService {
   constructor(
     private readonly databaseService: DatabaseService, 
-    private readonly promoService: PromoService
+    private readonly promoService: PromoService,
+    private readonly orderService: OrderService,
+    private readonly extraService: ExtraService
   ) {}
 
 
@@ -79,6 +83,7 @@ export class ClientRequestService {
               confirmedData.promos.push({
                 price: foundPromo.price,
                 promoid: foundPromo.id,
+                Image: foundPromo.image,
                 ordersPromo,
                 extraPromo
               });
@@ -89,65 +94,51 @@ export class ClientRequestService {
     //ORDER PROCESS------------------------------------------------------
       if (data.orders)
         {
+          await Promise.all(
+            data.orders.map(async order => {
+              const orderDB = await this.orderService.findOneOrder(order.orderId)
 
+              totalprice =+ orderDB.price
+
+              confirmedData.orders.push({
+                price: orderDB.price,
+                orderid: orderDB.id,
+                adds: order.adds ? filterClientAdds(orderDB.addItems, order.adds) : [],
+              })
+
+            })
+          )
       }
     
     //---------------------------------------------------------------------- 
     //EXTRA PROCESS------------------------------------------------------
       if (data.extras)
       {
+        await Promise.all(
+          data.extras.map(async extra =>{
+            const extraDB = await this.extraService.findOneExtra(extra.extraId)
+
+            totalprice =+ extraDB.price
+
+            confirmedData.extras.push({
+              price: extraDB.price,
+              extraid: extraDB.id,
+
+            })
+          })
+        )
 
       }
 
-    //---------------------------------------------------------------------- 
     //DELIVERY PROCESS------------------------------------------------------
+
     if (data.delivery){
       totalprice += 1000
     }
 
+    //CREATING PROCESS------------------------------------------------------
       const createdClientRequest = await this.databaseService.clientRequest.create({
-        data:{
-          delivery: data.delivery,
-          totalPrice: totalprice,
-          orders: {
-            create: confirmedData.orders.map(order => ({
-              orderId: order.orderId,
-              promoId: order.isPromo || null, // Relacionar con promo si aplica
-              adds: {
-                create: order.adds.map(add => ({
-                  addItemId: add.addItemId,
-                  howMany: add.howMany,
-                  price: 0, // Asigna un precio si es necesario
-                })),
-              },
-            })),
-          },
-
-          // Crear las promociones relacionadas (ClientRequestPromo)
-          promos: confirmedData.promos
-            ? {
-                create: confirmedData.promos.map(promo => ({
-                  promoId: promo.promoId,
-                  orders: { //this create client request order
-                    connect: promo.promoAdds.map(add => ({
-                      id: add.idOrder,
-                    })),
-                  },
-                })),
-              }
-            : undefined,
-
-          // Crear los extras relacionados (ClientRequestExtra)
-          extras: confirmedData.extras
-            ? {
-                create: confirmedData.extras.map(extra => ({
-                  extraId: extra.extraId,
-                  promoId: extra.promoId || null, // Relacionar con promo si aplica
-                  price: 0, // Asigna un precio si es necesario
-                })),
-              }
-            : undefined,
-        },
+        data:{},
       });
 
       return createdClientRequest
@@ -156,7 +147,7 @@ export class ClientRequestService {
       console.error('Error while creating Client Request:', error);
       throw error;
     }
-  } //END
+  } //END------------------------------------------------------
 
 
 
