@@ -20,7 +20,7 @@ class CreateClientRequestOrderDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateClientRequestAddsDto)
-  adds: CreateClientRequestAddsDto[];
+  adds?: CreateClientRequestAddsDto[];
 }
 
 class CreateClientRequestPromoDto {
@@ -32,12 +32,12 @@ class CreateClientRequestPromoDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ordersPromo)
-  orders: ordersPromo[];
+  orders?: ordersPromo[];
 
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateClientRequestExtraDto)
-  extras: CreateClientRequestExtraDto[];
+  extras?: CreateClientRequestExtraDto[];
 }
 
 class ordersPromo { 
@@ -46,7 +46,7 @@ class ordersPromo {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => promoAdds)
-  adds: promoAdds[]
+  adds?: promoAdds[]
 }
 
 class promoAdds  {
@@ -76,7 +76,7 @@ export class CreateClientRequestDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateClientRequestOrderDto)
-  orders: CreateClientRequestOrderDto[];
+  orders?: CreateClientRequestOrderDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
