@@ -37,7 +37,7 @@ export class ClientRequestService {
         filteredOrders.forEach(adds => {
           const matchingIdObj = orderRequest.find(idObj => idObj.id === adds.id);
           if (matchingIdObj) {
-            Object.assign(adds, matchingIdObj); // Copia los campos del objeto coincidente
+            Object.assign(adds, matchingIdObj); 
           }
         });
 
@@ -54,14 +54,12 @@ export class ClientRequestService {
             data.promos.map(async (promo) => {
               const foundPromo = await this.promoService.findOnePromo(promo.promoId);
               let entryData = promo
-              // Sumar el precio de la promoción al total
               totalprice += foundPromo.price;
       
               
 
-              // Crear el array de órdenes relacionadas con la promoción
+
               const ordersPromo = foundPromo.orders.map((order) => {
-                // Definir `orderRequest` antes de retornar el objeto
                 const orderRequest = entryData.orders.splice(entryData.orders.findIndex(u => u.idOrder === order.id), 1)[0];
               
                 return {
