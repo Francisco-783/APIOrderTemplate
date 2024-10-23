@@ -99,6 +99,12 @@ model Order {
   createdBy       String
 }
 
+
+model IsOpen {
+  open   Boolean   @unique
+}
+
+
 model AddItem { //aditives to a order, extra fries or extra meat
   id          String   @id @default(uuid()) @unique
   name        String
