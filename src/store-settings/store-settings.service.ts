@@ -20,4 +20,15 @@ export class StoreSettingsService {
         return await this.databaseModule.storeSettings.findMany()
     }
 
+    async setIsOpen(isOpen: boolean, id: string) {
+        return await this.databaseModule.storeSettings.update({
+            where:{
+                id: id,
+            },
+            data:{
+                isOpen: isOpen
+            }
+        }
+        )
+    }
 }
