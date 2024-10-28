@@ -15,5 +15,9 @@ export class StoreSettingsService {
         )
         return (await store).isOpen
     }
+    
+    async getAllStoreStatus() {
+        return await this.databaseModule.storeSettings.findMany()
+    }
 
 }
