@@ -100,8 +100,10 @@ model Order {
 }
 
 
-model IsOpen {
-  open   Boolean   @unique
+model StoreSettings {
+  id       String  @id @default(uuid())
+  isOpen   Boolean @default(false)
+  address   String
 }
 
 
