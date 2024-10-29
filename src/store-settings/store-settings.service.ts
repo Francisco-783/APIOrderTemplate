@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
+import { CreateStoreSettings } from 'src/dto/store-settings/create-store-settings.dto';
 
 @Injectable()
 export class StoreSettingsService {
@@ -31,4 +32,14 @@ export class StoreSettingsService {
         }
         )
     }
+
+    async createStore(store:CreateStoreSettings){
+        return await this.databaseModule.storeSettings.create({
+            data:{
+                isOpen: store.isOpen,
+                address: store.address
+            }
+        })
+    }
+
 }
