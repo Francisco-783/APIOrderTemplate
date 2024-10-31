@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientRequestDto } from '../dto/client-request/create-client-request.dto';
 import { UpdateClientRequestDto } from '../dto/client-request/update-client-request.dto';
-import { DatabaseService } from 'src/database/database.service';//prisma
+import { DatabaseService } from 'src/database/database.service';
 import { PromoService } from 'src/promo/promo.service';
 import { OrderService } from 'src/order/order.service';
 import { ExtraService } from 'src/extra/extra.service';
