@@ -16,12 +16,22 @@ export class ExtraController {
   @Public()
   @Get()
   findAll() {
-    return this.extraService.findAllExtra();
+    return this.extraService.findAllExtra(false);
+  }
+
+  @Get("admin")
+  findAllAdmin() {
+    return this.extraService.findAllExtra(true);
   }
 
   @Public()
   @Get(':id')
   findOne(@Param('id' ) id: string) {
+    return this.extraService.findOneExtra(id);
+  }
+
+  @Get('admin/:id')
+  findOneAdmin(@Param('id' ) id: string) {
     return this.extraService.findOneExtra(id);
   }
 
