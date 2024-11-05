@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
 
@@ -10,7 +10,10 @@ export class PromoService {
 
     constructor(private readonly databaseModule: DatabaseService) {}
 
-    async findAllPromo(){
+    async findAllPromo(isAdmin: boolean){
+
+      let result
+
         try{
         const allPromos = await this.databaseModule.promo.findMany({
             include: {
@@ -22,7 +25,15 @@ export class PromoService {
               extras: true,
             },
           });
-       return allPromos
+
+          if (!isAdmin){
+            result = allPromos.filter(promo => promo.visible === true)
+          }
+          else{
+            result = allPromos
+          }
+
+       return result
     } catch (error) {
       console.error('Error while getting all promos:', error);
       throw error; 
@@ -32,7 +43,7 @@ export class PromoService {
 
 
 
-    async findOnePromo(id:string){
+    async findOnePromo(id:string, isAdmin: boolean){
         try{
             const onePromo = await this.databaseModule.promo.findUnique({
                 where: {
@@ -50,6 +61,9 @@ export class PromoService {
 
               if (!onePromo) {
                 throw new NotFoundException('La Promo que quieres obtener no existe');
+            }
+            else if (!isAdmin && !onePromo.visible){
+              throw new ForbiddenException('No tienes permiso para ver esta promocion');
             }
 
            return onePromo
