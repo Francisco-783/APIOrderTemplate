@@ -94,7 +94,7 @@ export class ClientRequestService {
         {
           await Promise.all(
             data.orders.map(async order => {
-              const orderDB = await this.orderService.findOneOrder(order.orderId)
+              const orderDB = await this.orderService.findOneOrder(order.orderId, false)
 
               totalprice =+ orderDB.price
 
