@@ -9,16 +9,29 @@ export class ExtraService {
   constructor(private readonly databaseModule: DatabaseService) {}
 
 
-  async findAllExtra() {
+  async findAllExtra(isAdmin: boolean) {
+
+    let result
+
     try{
 
     const allExtras = await this.databaseModule.extra.findMany();
 
-   return allExtras
-} catch (error) {
+    if (!isAdmin){
+      result = allExtras.filter(extra => extra.visible === true)
+    }
+    else{
+      result = allExtras
+    }
+   return result
+
+} 
+
+catch (error) {
   console.error('Error while getting all extras:', error);
   throw error; 
 }
+
 
 
 }
