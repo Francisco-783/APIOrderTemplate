@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateExtraDto } from 'src/dto/extra/create-extra.dto'; 
 import { UpdateExtraDto } from 'src/dto/extra/update-extra.dto'; 
@@ -38,7 +38,7 @@ catch (error) {
 
 
 
-  async findOneExtra(id: string) {
+  async findOneExtra(id: string, isAdmin: boolean) {
         try{
             const oneExtra = await this.databaseModule.extra.findUnique({
                 where: {
@@ -50,7 +50,11 @@ catch (error) {
                 throw new NotFoundException('La extra que quieres obtener no existe');
             }
 
-           return oneExtra
+            else if (!isAdmin && !oneExtra.visible){
+              throw new ForbiddenException('No tienes permiso para ver esto');
+            }
+    
+            return oneExtra;
         } catch (error) {
           console.error('Error while getting a extra:', error);
           throw error; 
