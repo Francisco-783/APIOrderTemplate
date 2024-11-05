@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateOrderDTO } from 'src/dto/order/create-order.dto';
 import { UpdateOrderDTO } from 'src/dto/order/update-order.dto';
 import { NotFoundException } from '@nestjs/common';
@@ -26,14 +26,24 @@ export class OrderService {
 
     constructor(private readonly databaseModule: DatabaseService) {}
 
-    async findAllOrder(){//if is USER only have to get the visible ones
+    async findAllOrder(isAdmin: boolean){//if is USER only have to get the visible ones
+
+      let result
+
         try{
         const allOrders = await this.databaseModule.order.findMany({
             include: {
               addItems: true,  // Incluir los aditivos (AddItem) relacionados
             },
           });
-       return allOrders
+
+        if (!isAdmin){
+          result = allOrders.filter(order => order.visible === true)
+        }
+        else{
+          result = allOrders
+        }
+       return result
     } catch (error) {
       console.error('Error while getting all orders:', error);
       throw error; 
@@ -42,7 +52,7 @@ export class OrderService {
     }
 
 
-    async findOneOrder(id: string) {
+    async findOneOrder(id: string, isAdmin: boolean) {
       try {
           const oneOrder = await this.databaseModule.order.findUnique({
               where: { id },
@@ -51,6 +61,9 @@ export class OrderService {
   
           if (!oneOrder) {
               throw new NotFoundException('La orden que quieres obtener no existe');
+          }
+          else if (!isAdmin && !oneOrder.visible){
+            throw new ForbiddenException('No tienes permiso para ver esta orden');
           }
   
           return oneOrder;
