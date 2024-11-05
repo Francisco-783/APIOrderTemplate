@@ -14,13 +14,25 @@ export class OrderController {
    @Public()
    @Get() //Get /order
    findAllOrder(){
-    return this.orderService.findAllOrder()
+    return this.orderService.findAllOrder(false)
+   }
+
+
+   @Get("admin") //Get /order
+   findAllOrderAdmin(){
+    return this.orderService.findAllOrder(true)
    }
 
    @Public()
    @Get(":id") //GET /order/:id
    findOneOrder(@Param("id") id:string){
-      return this.orderService.findOneOrder(id)
+      return this.orderService.findOneOrder(id, false)
+   }
+
+   
+   @Get("admin/:id") //GET /order/admin/:id
+   findOneOrderAdmin(@Param("id") id:string){
+      return this.orderService.findOneOrder(id, true)
    }
 
    @Post() //POST /order
@@ -28,12 +40,12 @@ export class OrderController {
       return this.orderService.createOrder(order)
    }
 
-   @Patch(":id") //PATCH /order/:id // falta agregar comprobacion que es el admin
+   @Patch(":id") //PATCH /order/:id 
    editOrder(@Body(ValidationPipe) editedOrder: UpdateOrderDTO, @Param("id") id:string ){
         return this.orderService.editOrder(id , editedOrder)
    }
 
-   @Delete(":id") //DELETE /order/:id // falta agregar comprobacion que es el admin
+   @Delete(":id") //DELETE /order/:id
    updateOrderVisibility(
       @Param("id") id: string,
       @Query('visible') visible: string
