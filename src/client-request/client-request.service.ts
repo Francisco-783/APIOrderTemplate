@@ -114,7 +114,7 @@ export class ClientRequestService {
       {
         await Promise.all(
           data.extras.map(async extra =>{
-            const extraDB = await this.extraService.findOneExtra(extra.extraId)
+            const extraDB = await this.extraService.findOneExtra(extra.extraId, false)
 
             totalprice =+ extraDB.price
 
