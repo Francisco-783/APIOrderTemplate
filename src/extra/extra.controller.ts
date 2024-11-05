@@ -27,12 +27,12 @@ export class ExtraController {
   @Public()
   @Get(':id')
   findOne(@Param('id' ) id: string) {
-    return this.extraService.findOneExtra(id);
+    return this.extraService.findOneExtra(id, false);
   }
 
   @Get('admin/:id')
   findOneAdmin(@Param('id' ) id: string) {
-    return this.extraService.findOneExtra(id);
+    return this.extraService.findOneExtra(id, true);
   }
 
   @Patch(':id')
