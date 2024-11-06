@@ -50,15 +50,4 @@ export class AuthGuard implements CanActivate {
       context.getClass(),
     ]);
   }
-
-  async isTokenValid(token: string): Promise<boolean> {
-    try {
-      await this.jwtService.verifyAsync(token, {
-        secret: jwtConstants.secret,
-      });
-      return true; // El token es válido
-    } catch {
-      return false; // El token es inválido o expirado
-    }
-  }
 }
