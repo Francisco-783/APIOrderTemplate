@@ -52,7 +52,7 @@ export class ClientRequestService {
         if (data.promos) {
           await Promise.all(
             data.promos.map(async (promo) => {
-              const foundPromo = await this.promoService.findOnePromo(promo.promoId);
+              const foundPromo = await this.promoService.findOnePromo(promo.promoId, false);
               let entryData = promo
               totalprice += foundPromo.price;
       
