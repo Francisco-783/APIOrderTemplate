@@ -12,13 +12,23 @@ export class PromoController {
     @Public()
     @Get()  //GET -/promo
     findAll(){
-     return this.PromoService.findAllPromo()
+     return this.PromoService.findAllPromo(false)
+    }
+
+    @Get("admin")  //GET -/promo
+    findAllAdmin(){
+     return this.PromoService.findAllPromo(false)
     }
  
     @Public()
     @Get(":id")  // GET -/promo/:idPromo
     findOne(@Param("id") id:string){
-       return this.PromoService.findOnePromo(id)
+       return this.PromoService.findOnePromo(id, false)
+    }
+
+    @Get("admin/:id")  // GET -/promo/:idPromo
+    findOnePromoAdmin(@Param("id") id:string){
+       return this.PromoService.findOnePromo(id, false)
     }
  
     @Post()  // CREATE -/promo/:IdAdmin (BODY DATA)
