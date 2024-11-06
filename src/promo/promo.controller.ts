@@ -1,13 +1,24 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { PromoService } from './promo.service';
 import { CreatePromoDTO } from 'src/dto/promo/create-promo.dto'; 
 import { UpdateOrderDTO } from 'src/dto/order/update-order.dto'; 
 import { Public } from 'src/auth/auth.guard';
+import { AuthService } from 'src/auth/auth.service';
+import { Request as ExpressRequest } from 'express';
 
 @Controller('promo')
 export class PromoController {
 
-    constructor (private readonly PromoService: PromoService) {}
+    constructor (
+      private readonly PromoService: PromoService,
+      private readonly authService: AuthService
+    ) {}
+
+   
+    @Get('test')
+    TESTINGSTUFF(@Request() req: ExpressRequest) {
+      return this.authService.getAdminId(req) +"DSDSDSD"
+    }
    
     @Public()
     @Get()  //GET -/promo
@@ -32,7 +43,7 @@ export class PromoController {
     }
  
     @Post()  // CREATE -/promo/:IdAdmin (BODY DATA)
-    createPromo(@Body(ValidationPipe) promo:CreatePromoDTO){
+    createPromo(@Body(ValidationPipe) promo:CreatePromoDTO, ){
        return this.PromoService.createPromo(promo)
     }
  
@@ -49,5 +60,6 @@ export class PromoController {
       const isVisible = visible === 'true';
       return this.PromoService.updatePromoVisibility(id, isVisible);
    }
+
 
 }
